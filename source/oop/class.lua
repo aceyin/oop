@@ -7,6 +7,7 @@ local module = require 'std.module'
 --- @alias oop.ClassExtension table<string,any>
 --- @alias oop.class.Prototype table<string, oop.class.PrototypeField>
 --- @alias oop.class.Mode string
+--- @alias oop.class.Constructor fun(c:oop.Class, ...:any):oop.Object
 
 --- @class oop.class.PrototypeField
 --- @field type std.DataType
@@ -41,16 +42,54 @@ local reserve = {
     destroy = { type = 'fun', overwrite = true }
 }
 
+-- 构造函数名称
+local constructor_fun = 'new'
+
+--- get the constructor of `class`
+--- @param class oop.Class
+--- @return oop.class.Constructor | nil
+local function constructor_of(class)
+    local fn = class[constructor_fun]
+    if type(fn) == 'function' then
+        return fn
+    end
+    return nil
+end
+
+--- init an `object` with the value passed from constructor
+--- @param object oop.Object
+--- @vararg any init values
+--- @return void
+local function init_object(object, ...)
+    local argn = select('#', ...)
+    if argn == 0 then return object end
+
+    for field, val in pairs({ ... } or empty_table) do
+        -- TODO validate val
+        -- TODO add default value support
+        object[field] = val
+    end
+end
+
 --- constructor of a class
---- @param c oop.Class
+--- @param class oop.Class
 --- @vararg any
 --- @return oop.Object
-local function new_instance(c, ...)
-    local object = {}
+local function new_instance(class, ...)
+    --- @type oop.Object
+    local object
+
+    local new = constructor_of(class)
+    if new then
+        object = new(class, ...)
+    else
+        object = {}
+        init_object(object)
+    end
 
     local mod = module.caller(3)
     module.set_type(object, module.types.object)
-    meta.init(object, mod, c:classname(), c:prototype())
+    meta.init(object, mod, class:classname(), class:prototype())
 
     --- get class name of this object.
     --- @return string
@@ -65,21 +104,13 @@ local function new_instance(c, ...)
     end
 
     --- check if this object is an instance of `class`.
-    --- @param class oop.Class
+    --- @param c oop.Class
     --- @return boolean
-    function object:instanceof(class)
+    function object:instanceof(c)
         if meta.classname(self) == nil then return false end
-        return meta.classname(class) == meta.classname(self)
+        return meta.classname(c) == meta.classname(self)
     end
 
-    local argn = select('#', ...)
-    if argn == 0 then return object end
-
-    for field, val in pairs(init or empty_table) do
-        -- TODO validate val
-        -- TODO add default value support
-        object[field] = val
-    end
     -- TODO add trait support
     return object
 end
