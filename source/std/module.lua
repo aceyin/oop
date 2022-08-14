@@ -4,6 +4,7 @@
 ---
 
 --- @alias std.module.Type string
+--- @alias std.error.Message
 
 local gsub, find, gmatch, sub = string.gsub, string.find, string.gmatch, string.sub
 
@@ -82,7 +83,7 @@ end
 --- get the module name call this(`caller()`) function.
 --- @param lv thread level
 --- @return string
-local function caller(lv)
+local function caller_name(lv)
     lv = lv or 2
     local sep = (fs == '/') and fs or [[\\]]
 
@@ -109,5 +110,5 @@ return {
     get_type = get_type,
     is_class = is_class,
     is_object = is_object,
-    caller = caller,
+    name = caller_name,
 }

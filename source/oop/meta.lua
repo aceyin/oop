@@ -63,8 +63,19 @@ local function get_prototype(class)
     return meta[fields.prototype]
 end
 
+--- get the Lua module where this `class` defined.
+--- @param class oop.Class
+--- @return string|nil
+local function get_module(class)
+    assert(module.is_class(class), 'param 1 must be a class.')
+    local meta = class[CLASS_INFO]
+    if not meta then return nil end
+    return meta[fields.module]
+end
+
 return {
     init = add_class_info,
     classname = get_name,
     prototype = get_prototype,
+    module = get_module,
 }

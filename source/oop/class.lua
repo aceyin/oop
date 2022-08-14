@@ -3,6 +3,7 @@
 ---
 local meta = require 'oop.meta'
 local module = require 'std.module'
+local registry = require 'oop.registry'
 
 --- @alias oop.ClassExtension table<string,any>
 --- @alias oop.class.Prototype table<string, oop.class.PrototypeField>
@@ -64,7 +65,7 @@ local function init_object(object, ...)
     local argn = select('#', ...)
     if argn == 0 then return object end
 
-    for field, val in pairs({ ... } or empty_table) do
+    for field, val in pairs({ ... }) do
         -- TODO validate val
         -- TODO add default value support
         object[field] = val
@@ -87,7 +88,7 @@ local function new_instance(class, ...)
         init_object(object)
     end
 
-    local mod = module.caller(3)
+    local mod = module.name(3)
     module.set_type(object, module.types.object)
     meta.init(object, mod, class:classname(), class:prototype())
 
@@ -128,16 +129,45 @@ local function add_extension(c, ext)
     return c
 end
 
+--- get class name and proto from arguments.
+--- @param mod string Lua module name define class.
+--- @vararg string|table class name and class prototype
+--- @return string, table
+local function extract(mod, ...)
+    local argn = select('#', ...)
+    if argn == 0 then return mod, nil end
+
+    local v1 = select(1, ...)
+    local k1 = type(v1)
+
+    assert(k1 == 'string' or k1 == 'table',
+           ('argument type invalid: string or table expected, but "%s" found.'):format(k1))
+
+    local name, proto
+    -- when first arg is string, it should be class name.
+    if k1 == 'string' then
+        name = v1
+        proto = select(2, ...)
+    else
+        name = mod
+        proto = v1
+    end
+    return name, proto
+end
+
 --- create a new class object with the given argument as the prototype
---- @param name string class name, optional
---- @param proto oop.class.Prototype
+--- @overload fun(c:oop.Class, name:string, proto:oop.class.Prototype):oop.Class
+--- @vararg any
+--- param 1 is the name of class, optional
+--- param 2 is the prototype of class
 --- @return oop.Class
-local function new_class(_, name, proto)
+local function new_class(_, ...)
     --- @class oop.Class
     local Class = {}
 
+    local mod = module.name(3)
+    local name, proto = extract(mod, ...)
     module.set_type(Class, module.types.class)
-    local mod = module.caller(3)
     meta.init(Class, mod, name, proto)
 
     --- get class name
@@ -152,10 +182,19 @@ local function new_class(_, name, proto)
         return meta.prototype(self)
     end
 
+    --- get the Lua module where this `Class` defined.
+    --- @return string
+    function Class:module()
+        return meta.module(self)
+    end
+
     setmetatable(Class, {
         __call = new_instance,
         __bor = add_extension
     })
+
+    -- put into registry
+    registry.put(Class)
 
     return Class
 end
