@@ -1,27 +1,42 @@
-local ann = require 'validation.annotations'
-local impl = require 'oop.impl'
 local class = require 'oop.class'
-local wink = require 'traits.wink'
-local walk = require 'traits.walk'
-local trait = require 'oop.trait'
-local entity = require 'oop.entity'
+local module = require 'std.module'
 
-local not_blank = ann.not_blank
-local regex = ann.regex
-local min, max = ann.min, ann.max
+describe('#oop.class.tests', function()
+    --- @class Animal
+    local proto = {
+        family = string,
+        name = string
+    }
 
---- @class struct.Animal
-local struct = {
-    category = { string, not_blank, regex('[%w_]+') },
-    weight = { number, min(1), max(10000) },
-    test = { boolean, min(1), max(10000) },
-}
+    --- @type oop.Class
+    local animal
 
---- @class class.Animal : struct.Animal
-local animal = class('animal', struct) | impl { wink, walk } | entity {}
+    test('new.simple.class', function()
+        animal = class('animal', proto)
 
-function animal:talk()
-    print(('talk:%s'):format(self.category))
-end
+        assert.is_equal('animal', animal:classname())
+        assert.is_same(proto, animal:prototype())
 
-return animal
+        assert.is_equal('$class', module.get_type(animal))
+        assert.is_true(module.is_class(animal))
+        assert.is_false(module.is_object(animal))
+
+        local module_info = animal['$MODULE-INFO']
+        assert.is_not_nil(module_info)
+        assert.is_equal('$class', module_info['$TYPE'])
+
+        local class_info = animal['$CLASS-INFO']
+        assert.is_not_nil(class_info)
+        assert.is_equal('animal', class_info['$NAME'])
+    end)
+
+    test('new.simple.object', function()
+        --- @type Animal
+        local dog = animal { name = 'dog', family = 'dog-family' }
+        assert.is_equal('dog', dog.name)
+        assert.is_equal('dog-family', dog.family)
+
+        --- @type Animal
+        local cat = animal { name = 'cat', family = 'cat' }
+    end)
+end)

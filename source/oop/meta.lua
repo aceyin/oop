@@ -9,21 +9,22 @@ local CLASS_INFO = '$CLASS-INFO'
 
 local fields = {
     name = '$NAME',
-    prototype = '$PROTOTYPE',
-    pkg = '$PACKAGE',
+    module = '$MODULE',
     mode = '$CLASS-MODE',
+    prototype = '$PROTOTYPE',
 }
 
 --- add(init) class info for a class.
 --- @param class oop.Class
+--- @param mod string module name this class defined
 --- @param name string
 --- @param proto oop.class.Prototype
---- @param pkg string
+--- @param mod string
 --- @return void
-local function add_class_info(class, name, proto, pkg)
+local function add_class_info(class, mod, name, proto)
     assert(module.is_class(class) or module.is_object(class),
            'param 1 must be a class or an object.')
-    assert(type(name) == 'string', 'param 2 must be a string')
+    assert(type(name) == 'string', 'param 3 must be a string')
 
     local meta = class[CLASS_INFO]
     assert(meta == nil, 'class/object has class-info already')
@@ -31,8 +32,8 @@ local function add_class_info(class, name, proto, pkg)
     if not meta then
         class[CLASS_INFO] = {
             [fields.name] = name,
+            [fields.module] = mod,
             [fields.prototype] = proto,
-            [fields.pkg] = pkg
         }
     end
 end

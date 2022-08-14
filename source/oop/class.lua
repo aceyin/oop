@@ -41,20 +41,16 @@ local reserve = {
     destroy = { type = 'fun', overwrite = true }
 }
 
---- get the package name(the Lua module call `class()`)
----
-local function get_package()
-    print('module in new_class=', debug.getinfo(2, 'S').source)
-end
-
 --- constructor of a class
 --- @param c oop.Class
 --- @vararg any
 --- @return oop.Object
 local function new_instance(c, ...)
     local object = {}
+
+    local mod = module.caller(3)
     module.set_type(object, module.types.object)
-    meta.init(object, c:classname(), c:prototype())
+    meta.init(object, mod, c:classname(), c:prototype())
 
     --- get class name of this object.
     --- @return string
@@ -110,7 +106,8 @@ local function new_class(_, name, proto)
     local Class = {}
 
     module.set_type(Class, module.types.class)
-    meta.init(Class, name, proto)
+    local mod = module.caller(3)
+    meta.init(Class, mod, name, proto)
 
     --- get class name
     --- @return string

@@ -5,8 +5,9 @@
 
 --- @alias std.module.Type string
 
-local gsub = string.gsub
+local gsub, find, gmatch, sub = string.gsub, string.find, string.gmatch, string.sub
 
+local fs = package.config:sub(1, 1)
 local MODULE_INFO = '$MODULE-INFO'
 
 --- $MODULE 原表的成员类型
@@ -79,16 +80,27 @@ local function is_object(object)
 end
 
 --- get the module name call this(`caller()`) function.
+--- @param lv thread level
 --- @return string
-local function caller()
-    local source = debug.getinfo(2, 'S').source
-    source = gsub(source, '@', '')
-    source = gsub(source, '%.lua', '')
-    local path = package.path
-    for str in string.gmatch(path, "([^;]+)") do
-        local source_root = gsub(str, '^([^%?]+)/%?.+$','%1')
+local function caller(lv)
+    lv = lv or 2
+    local sep = (fs == '/') and fs or [[\\]]
 
+    local source = debug.getinfo(lv, 'S').source
+    source = gsub(source, '^@(.+)%.lua$', '%1')
+
+    local paths = package.path
+    for str in gmatch(paths, "([^;]+)") do
+        local path = gsub(str, '^([^%?]+)/%?.+$', '%1')
+        local s, e = find(source, path, 1, true)
+        -- source is a full path
+        if e then
+            return sub(source, e + 2):gsub(sep, '.')
+        end
     end
+    -- when source is not a full path,
+    -- it's not possible to get the completely correct module name
+    return source:gsub(sep, '.')
 end
 
 return {
@@ -97,4 +109,5 @@ return {
     get_type = get_type,
     is_class = is_class,
     is_object = is_object,
+    caller = caller,
 }

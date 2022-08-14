@@ -1,0 +1,15 @@
+return {
+  _all = {
+    coverage = true
+  },
+  default = {
+    verbose = true,
+    pattern = ".spec.lua",
+    lpath="source/?.lua;source/?/?.lua;spec/?.lua;spec/?/?.lua"
+  },
+  oop = {
+    tags = "oop",
+    ROOT = {"spec/oop"},
+    verbose = true
+  }
+}
