@@ -56,4 +56,5 @@ describe('#oop.class.tests', function()
         assert.is_equal('tree', lemon.family)
         assert.is_equal('lemon', lemon.name)
     end)
+
 end)

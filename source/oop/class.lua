@@ -28,33 +28,6 @@ local mode = {
     singleton = 'class.mode.singleton'
 }
 
---- 保留字
---- key: 保留字, value: {type=类型,overwrite=是否允许重写}
-local reserve = {
-    -- class constructor
-    new = { type = 'fun', overwrite = true },
-    -- function to get class name
-    classname = { type = 'fun', overwrite = false },
-    -- function to get prototype
-    prototype = { type = 'fun', overwrite = false },
-    -- object destroy
-    destroy = { type = 'fun', overwrite = true }
-}
-
--- 构造函数名称
-local constructor_fun = 'new'
-
---- get the constructor of `class`
---- @param class oop.Class
---- @return oop.class.Constructor | nil
-local function constructor(class)
-    local fn = class[constructor_fun]
-    if type(fn) == 'function' then
-        return fn
-    end
-    return nil
-end
-
 --- init an `object` with the value passed from constructor
 --- @param
 --- @return oop.Object
@@ -82,14 +55,7 @@ end
 --- @return oop.Object
 local function new_instance(class, ...)
     --- @type oop.Object
-    local object
-
-    local ctor = constructor(class)
-    if ctor then
-        object = ctor(class, ...)
-    else
-        object = class:new(...)
-    end
+    local object = class:new(...)
 
     local mod = module.name(3)
     module.set_type(object, module.types.object)
@@ -200,7 +166,7 @@ local function new_class(_, ...)
 
     setmetatable(Class, {
         __call = new_instance,
-        __bor = add_extension
+        __bor = add_extension,
     })
 
     -- put into registry
