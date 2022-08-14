@@ -20,8 +20,6 @@ local registry = require 'oop.registry'
 --- @field prototype fun(o:oop.Object):oop.class.Prototype
 --- @field instanceof fun(o:oop.Object, c:oop.Class):boolean
 
-local empty_table = {}
-
 --- class mode
 local mode = {
     -- 严格模式: 创建 object 实例时, 不允许添加 prototype 里面没有的属性
@@ -49,7 +47,7 @@ local constructor_fun = 'new'
 --- get the constructor of `class`
 --- @param class oop.Class
 --- @return oop.class.Constructor | nil
-local function constructor_of(class)
+local function constructor(class)
     local fn = class[constructor_fun]
     if type(fn) == 'function' then
         return fn
@@ -58,22 +56,19 @@ local function constructor_of(class)
 end
 
 --- init an `object` with the value passed from constructor
---- @vararg any init values
+--- @param
 --- @return oop.Object
-local function default_instance(...)
+local function default_constructor(values)
     --- @type oop.Object
     local object = {}
 
-    local argn = select('#', ...)
-    if argn == 0 then return object end
+    if not values then return object end
 
-    -- only support 1 argument and it should be a table
-    local init_values = select(1, ...)
-    local k = type(init_values)
+    local k = type(values)
     assert(k == 'table',
            ('argument type invalid:%s. default constructor argument type must be table.'):format(k))
 
-    for field, val in pairs(init_values) do
+    for field, val in pairs(values) do
         -- TODO validate val
         -- TODO add default value support
         object[field] = val
@@ -89,11 +84,11 @@ local function new_instance(class, ...)
     --- @type oop.Object
     local object
 
-    local new = constructor_of(class)
-    if new then
-        object = new(class, ...)
+    local ctor = constructor(class)
+    if ctor then
+        object = ctor(class, ...)
     else
-        object = default_instance(...)
+        object = class:new(...)
     end
 
     local mod = module.name(3)
@@ -194,6 +189,13 @@ local function new_class(_, ...)
     --- @return string
     function Class:module()
         return meta.module(self)
+    end
+
+    --- create new instance of this `Class`
+    --- @param values table<string, any> init values
+    --- @return oop.Object
+    function Class:new(values)
+        return default_constructor(values)
     end
 
     setmetatable(Class, {

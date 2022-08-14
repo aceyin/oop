@@ -2,13 +2,13 @@ local class = require 'oop.class'
 local module = require 'std.module'
 
 describe('#oop.class.tests', function()
-    --- @class Animal
+    --- @class AnimalPrototype : oop.Object
     local proto = {
         family = string,
         name = string
     }
 
-    --- @type oop.Class
+    --- @class Animal: oop.Class
     local animal
 
     test('new.simple.class', function()
@@ -31,12 +31,29 @@ describe('#oop.class.tests', function()
     end)
 
     test('new.simple.object', function()
-        --- @type Animal
+        --- @class Dog : AnimalPrototype
         local dog = animal { name = 'dog', family = 'dog-family' }
+        assert.is_true(module.is_object(dog))
         assert.is_equal('dog', dog.name)
         assert.is_equal('dog-family', dog.family)
+        assert.is_true(dog:instanceof(animal))
+    end)
 
-        --- @type Animal
-        local cat = animal { name = 'cat', family = 'cat' }
+    test('new.object.with.custom.constructor', function()
+        local plant = class('plants', { family = string })
+
+        function plant:new(family, name)
+            return {
+                family = family,
+                name = name,
+            }
+        end
+
+        --- @type oop.Object
+        local lemon = plant('tree', 'lemon')
+        assert.is_true(module.is_object(lemon))
+        assert.is_equal('plants', lemon:classname())
+        assert.is_equal('tree', lemon.family)
+        assert.is_equal('lemon', lemon.name)
     end)
 end)
