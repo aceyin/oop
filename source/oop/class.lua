@@ -58,18 +58,27 @@ local function constructor_of(class)
 end
 
 --- init an `object` with the value passed from constructor
---- @param object oop.Object
 --- @vararg any init values
---- @return void
-local function init_object(object, ...)
+--- @return oop.Object
+local function default_instance(...)
+    --- @type oop.Object
+    local object = {}
+
     local argn = select('#', ...)
     if argn == 0 then return object end
 
-    for field, val in pairs({ ... }) do
+    -- only support 1 argument and it should be a table
+    local init_values = select(1, ...)
+    local k = type(init_values)
+    assert(k == 'table',
+           ('argument type invalid:%s. default constructor argument type must be table.'):format(k))
+
+    for field, val in pairs(init_values) do
         -- TODO validate val
         -- TODO add default value support
         object[field] = val
     end
+    return object
 end
 
 --- constructor of a class
@@ -84,8 +93,7 @@ local function new_instance(class, ...)
     if new then
         object = new(class, ...)
     else
-        object = {}
-        init_object(object)
+        object = default_instance(...)
     end
 
     local mod = module.name(3)
