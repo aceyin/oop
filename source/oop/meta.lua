@@ -4,6 +4,7 @@
 --- @alias std.meta.Type string
 
 local module = require 'std.module'
+local mode = require 'oop.mode'
 
 local CLASS_INFO = '$CLASS-INFO'
 
@@ -14,28 +15,59 @@ local fields = {
     prototype = '$PROTOTYPE',
 }
 
+--- extract class mode settings from prototype.
+--- @param proto oop.class.Prototype
+--- @return table<string, boolean>
+local function extract_class_mode(proto)
+    local _mode = {}
+    for key, option in pairs(proto) do
+        -- class fields are string type keys
+        -- class option are number type keys
+        if type(key) ~= 'number' then goto CONTINUE end
+
+        assert(type(option) == 'table',
+               ('prototype option value must be a table, option index:%s'):format(key))
+
+        for mk, mv in pairs(mode) do
+            for n, v in pairs(option) do
+                -- support { strict=true, singleton=true } style
+                if n == mk then
+                    _mode[mk] = v
+                else
+                    -- support { mode.strict, mode.singleton } style
+                    if mv == v then
+                        _mode[mk] = true
+                    end
+                end
+            end
+        end
+        :: CONTINUE ::
+    end
+    return _mode
+end
+
 --- add(init) class info for a class.
 --- @param class oop.Class
---- @param mod string module name this class defined
---- @param name string
---- @param proto oop.class.Prototype
---- @param mod string
+--- @param mod string Lua module name this class defined
+--- @param name string class name
+--- @param proto oop.class.Prototype class prototype
 --- @param overwrite boolean
 --- @return void
 local function add_class_info(class, mod, name, proto, overwrite)
-    assert(module.is_class(class) or module.is_object(class),
+    assert(mod.is_class(class) or mod.is_object(class),
            'param 1 must be a class or an object.')
     assert(type(name) == 'string', 'param 3 must be a string')
 
     local meta = class[CLASS_INFO]
-    if meta and not overwrite then
-        return
-    end
+    if meta and not overwrite then return end
 
+    -- get class mode from prototype
+    local class_mode = extract_class_mode(proto)
     class[CLASS_INFO] = {
         [fields.name] = name,
         [fields.module] = mod,
         [fields.prototype] = proto,
+        [fields.mode] = class_mode
     }
 end
 

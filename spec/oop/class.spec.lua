@@ -1,3 +1,4 @@
+local mode = require 'oop.mode'
 local class = require 'oop.class'
 local module = require 'std.module'
 
@@ -55,6 +56,14 @@ describe('#oop.class.tests', function()
         assert.is_equal('plants', lemon:classname())
         assert.is_equal('tree', lemon.family)
         assert.is_equal('lemon', lemon.name)
+    end)
+
+    test('strict.class.mode', function()
+        local bird_proto = {
+            family = string,
+            { mode.strict, singleton = true },
+        }
+        local bird = class('bird', bird_proto)
     end)
 
 end)

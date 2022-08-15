@@ -1,11 +1,11 @@
 ---
 --- a Prototype based Class System.
 ---
+local mode = require 'oop.mode'
 local meta = require 'oop.meta'
 local module = require 'std.module'
 local registry = require 'oop.registry'
 
---- @alias oop.ClassExtension table<string,any>
 --- @alias oop.class.Prototype table<string, oop.class.PrototypeField>
 --- @alias oop.class.Mode string
 --- @alias oop.class.Constructor fun(c:oop.Class, ...:any):oop.Object
@@ -20,13 +20,9 @@ local registry = require 'oop.registry'
 --- @field prototype fun(o:oop.Object):oop.class.Prototype
 --- @field instanceof fun(o:oop.Object, c:oop.Class):boolean
 
---- class mode
-local mode = {
-    -- 严格模式: 创建 object 实例时, 不允许添加 prototype 里面没有的属性
-    strict = 'class.mode.struct',
-    -- 单例
-    singleton = 'class.mode.singleton'
-}
+--- @class oop.class.Mixin
+--- @field name string mixin name
+--- @field apply fun(self:oop.class.Mixin, class:oop.Class):oop.Class
 
 --- init an `object` with the value passed from constructor
 --- @param
@@ -85,11 +81,11 @@ local function new_instance(class, ...)
     return object
 end
 
---- enhance class
+--- enhance class by mixin other feature.
 --- @param c oop.Class
---- @param ext oop.ClassExtension
+--- @param mixin oop.class.Mixin
 --- @return oop.Class
-local function add_extension(c, ext)
+local function mixin_class(c, mixin)
     local _name = c:classname()
     -- TODO 如果 struct 里面有 a 函数
     -- TODO 而且 class 里面又定义了 a 函数
@@ -166,7 +162,7 @@ local function new_class(_, ...)
 
     setmetatable(Class, {
         __call = new_instance,
-        __bor = add_extension,
+        __bor = mixin_class,
     })
 
     -- put into registry
@@ -175,4 +171,8 @@ local function new_class(_, ...)
     return Class
 end
 
-return setmetatable({}, { __call = new_class })
+local factory = {
+    mode = mode
+}
+
+return setmetatable(factory, { __call = new_class })
