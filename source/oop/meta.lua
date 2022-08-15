@@ -13,6 +13,7 @@ local fields = {
     module = '$MODULE',
     mode = '$CLASS-MODE',
     prototype = '$PROTOTYPE',
+
 }
 
 --- extract class mode settings from prototype.

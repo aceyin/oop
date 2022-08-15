@@ -71,18 +71,6 @@ local function new_instance(class, ...)
     module.set_type(object, module.types.object)
     meta.init(object, mod, class:classname(), class:prototype())
 
-    --- get class name of this object.
-    --- @return string
-    function object:classname()
-        return meta.classname(object)
-    end
-
-    --- get prototype of this object.
-    --- @return oop.class.Prototype
-    function object:prototype()
-        return meta.prototype(object)
-    end
-
     --- check if this object is an instance of `class`.
     --- @param c oop.Class
     --- @return boolean
@@ -92,7 +80,7 @@ local function new_instance(class, ...)
     end
 
     -- TODO add trait support
-    return object
+    return setmetatable(object, { __index = class })
 end
 
 --- enhance class by mixin other feature.
@@ -182,7 +170,6 @@ local function new_class(_, ...)
 
     -- put into registry
     registry.register(Class)
-
     return Class
 end
 

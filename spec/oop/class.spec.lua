@@ -95,16 +95,17 @@ describe('#oop.class.tests', function()
         registry.remove(bird)
     end)
 
-    test('add.fun.on.object', function()
+    test('object.overwrite.class.method', function()
         local pro = {
             family = string,
         }
         local bird = class('bird', pro)
-
+        -- define class method `hello`
         function bird:hello()
             return 'bird say hello'
         end
 
+        -- new instance
         local parrot = bird {
             family = 'parrot'
         }
@@ -112,12 +113,24 @@ describe('#oop.class.tests', function()
         local msg = parrot:hello()
         assert.is_equal('bird say hello', msg)
 
+        -- define object method `hello`
+        -- which will overwrite `hello` method
+        -- defined in `bird` class
         function parrot:hello()
             return 'parrot say hello'
         end
 
         msg = parrot:hello()
         assert.is_equal('parrot say hello', msg)
+
+        -- check `hello` in new object
+        local swift = bird {
+            family = 'swift'
+        }
+        msg = swift:hello()
+        assert.is_equal('bird say hello', msg)
+
+        registry.remove(bird)
     end)
 
 end)
