@@ -24,6 +24,10 @@ local registry = require 'oop.registry'
 --- @field name string mixin name
 --- @field apply fun(self:oop.class.Mixer, class:oop.Class):oop.Class
 
+--- @class oop.Trait
+--- @field name string
+---
+
 local invalid_construct_args = 'argument type invalid:%s. default constructor argument type must be table.'
 local invalid_field_name_type = 'new class "%s" instance error: field name must be string, but it is "%s".'
 local undefined_field = 'class "%s" is strict mode, cannot add undefined field "%s".'
@@ -88,7 +92,6 @@ end
 --- @param mixer oop.class.Mixer
 --- @return oop.Class
 local function mixin_class(c, mixer)
-    local _name = c:classname()
     -- TODO 如果 prototype 里面有 a 函数
     -- TODO 而且 class 里面又定义了 a 函数
     -- TODO 然后 trait 里面也定义了 a 函数

@@ -24,7 +24,11 @@ local types = {
     --- @type std.module.Type a object
     object = '$object',
     --- @type std.module.Type a normal Lua module
-    module = '$module'
+    module = '$module',
+    --- @type std.module.Type
+    mixer = '$mixer',
+    --- @type std.module.Type
+    trait = '$trait',
 }
 
 --- set the module type meta of given table.

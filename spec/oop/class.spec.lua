@@ -1,5 +1,6 @@
 local mode = require 'oop.mode'
 local class = require 'oop.class'
+local impl = require 'mixer.impl'
 local module = require 'std.module'
 local registry = require 'oop.registry'
 
@@ -131,6 +132,13 @@ describe('#oop.class.tests', function()
         assert.is_equal('bird say hello', msg)
 
         registry.remove(bird)
+    end)
+
+    test('mixin.trait', function()
+        local walkable = require 'traits.walkable'
+
+        local bird = class 'bird' | impl { walkable }
+
     end)
 
 end)
