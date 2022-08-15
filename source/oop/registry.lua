@@ -5,12 +5,23 @@
 ---
 
 local REGISTRY_KEY = 'oop.class.local.registry'
-local registry = _G[REGISTRY_KEY]
+
+--- get class registry
+--- @return table<string, oop.Class>
+local function get_registry()
+    local registry = _G[REGISTRY_KEY]
+    if registry then return registry end
+
+    _G[REGISTRY_KEY] = {}
+    registry = _G[REGISTRY_KEY]
+    return registry
+end
 
 --- get a class from registry
 --- @param name string class name
 --- @return oop.Class
 local function get_class(name)
+    local registry = get_registry()
     return registry[name]
 end
 
@@ -18,11 +29,7 @@ end
 --- @param class oop.Class
 --- @return boolean
 local function register_class(class)
-    if not registry then
-        _G[REGISTRY_KEY] = {}
-        registry = _G[REGISTRY_KEY]
-    end
-
+    local registry = get_registry()
     local classname = class:classname()
 
     local old = registry[classname]
@@ -45,11 +52,25 @@ end
 --- @param class oop.Class
 --- @return boolean
 local function replace_class(class)
+    local registry = get_registry()
+    local classname = class:classname()
+    registry[classname] = class
+    return true
+end
 
+--- remove class from registry
+--- @param class oop.Class
+--- @return boolean
+local function remove_class(class)
+    local registry = get_registry()
+    local classname = class:classname()
+    registry[classname] = nil
+    return true
 end
 
 return {
     get = get_class,
     register = register_class,
     replace = replace_class,
+    remove = remove_class,
 }

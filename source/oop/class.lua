@@ -101,7 +101,7 @@ end
 --- @return oop.Class
 local function mixin_class(c, mixer)
     local _name = c:classname()
-    -- TODO 如果 struct 里面有 a 函数
+    -- TODO 如果 prototype 里面有 a 函数
     -- TODO 而且 class 里面又定义了 a 函数
     -- TODO 然后 trait 里面也定义了 a 函数
     -- TODO 这里怎么办
