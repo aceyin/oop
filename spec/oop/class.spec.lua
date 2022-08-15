@@ -64,6 +64,13 @@ describe('#oop.class.tests', function()
             { mode.strict, singleton = true },
         }
         local bird = class('bird', bird_proto)
+
+        assert.has_error(function()
+            bird {
+                name = 'macaw',
+                family = 'parrot',
+            }
+        end, 'class "bird" is strict mode, cannot add undefined field "name".')
     end)
 
 end)

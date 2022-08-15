@@ -6,8 +6,6 @@
 local module = require 'std.module'
 local mode = require 'oop.mode'
 
-local dummy = {}
-
 local CLASS_INFO = '$CLASS-INFO'
 
 local fields = {
@@ -56,7 +54,7 @@ end
 --- @param overwrite boolean
 --- @return void
 local function add_class_info(class, mod, name, proto, overwrite)
-    assert(mod.is_class(class) or mod.is_object(class),
+    assert(module.is_class(class) or module.is_object(class),
            'param 1 must be a class or an object.')
     assert(type(name) == 'string', 'param 3 must be a string')
 

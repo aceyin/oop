@@ -26,7 +26,7 @@ local registry = require 'oop.registry'
 
 local msg_construct_arg_type_error = 'argument type invalid:%s. default constructor argument type must be table.'
 local msg_invalid_field_name_type = 'new class "%s" instance error: field name must be string, but it is "%s".'
-local msg_undefined_field = 'class "%s" is strict mode, cannot set value for undefined field "%s".'
+local msg_undefined_field = 'class "%s" is strict mode, cannot add undefined field "%s".'
 
 --- init an `object` with the value passed from constructor
 --- @param class oop.Class
