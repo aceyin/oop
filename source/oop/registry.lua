@@ -4,6 +4,8 @@
 --- DateTime: 2022/8/14 18:55
 ---
 
+local module = require 'std.module'
+
 local REGISTRY_KEY = 'oop.class.local.registry'
 
 --- get class registry
@@ -29,20 +31,21 @@ end
 --- @param class oop.Class
 --- @return boolean
 local function register_class(class)
+    assert(module.is_class(class), 'param 1 must be a class')
+
     local registry = get_registry()
     local classname = class:classname()
-
     local old = registry[classname]
     if not old then
         registry[classname] = class
         return true
     end
 
-    local module = class:module()
-    local old_module = old:module()
+    local mod = class:module()
+    local old_mod = old:module()
 
-    assert(old_module == module, ('Duplicated class definition found in module "%s" and "%s", classname:%s.')
-            :format(module, old_module, classname))
+    assert(old_mod == mod, ('Duplicated class definition found in module "%s" and "%s", classname:%s.')
+            :format(mod, old_mod, classname))
 
     registry[classname] = class
     return true
@@ -52,6 +55,7 @@ end
 --- @param class oop.Class
 --- @return boolean
 local function replace_class(class)
+    assert(module.is_class(class), 'param 1 must be a class')
     local registry = get_registry()
     local classname = class:classname()
     registry[classname] = class
@@ -62,6 +66,7 @@ end
 --- @param class oop.Class
 --- @return boolean
 local function remove_class(class)
+    assert(module.is_class(class), 'param 1 must be a class')
     local registry = get_registry()
     local classname = class:classname()
     registry[classname] = nil

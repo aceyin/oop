@@ -62,11 +62,11 @@ describe('#oop.class.tests', function()
     end)
 
     test('strict.class.mode', function()
-        local bird_proto = {
+        local pro = {
             family = string,
             { mode.strict, singleton = true },
         }
-        local bird = class('bird', bird_proto)
+        local bird = class('bird', pro)
 
         assert.has_error(function()
             bird {
@@ -78,19 +78,46 @@ describe('#oop.class.tests', function()
     end)
 
     test('define.func.in.prototype', function()
-        local bird_proto = {
+        local pro = {
             family = string,
             hello = function(self, msg)
-                return ('hello %s, i am %s family'):format(msg, self.family)
+                return msg
             end
         }
-        local bird = class('bird', bird_proto)
+        local bird = class('bird', pro)
 
         local parrot = bird {
             family = 'parrot'
         }
-        local msg = parrot:hello('everyone')
-        assert.is_equal('hello everyone, i am parrot family', msg)
+        assert.has_error(function()
+            parrot:hello('everyone')
+        end, "attempt to call a nil value (method 'hello')")
+        registry.remove(bird)
+    end)
+
+    test('add.fun.on.object', function()
+        local pro = {
+            family = string,
+        }
+        local bird = class('bird', pro)
+
+        function bird:hello()
+            return 'bird say hello'
+        end
+
+        local parrot = bird {
+            family = 'parrot'
+        }
+
+        local msg = parrot:hello()
+        assert.is_equal('bird say hello', msg)
+
+        function parrot:hello()
+            return 'parrot say hello'
+        end
+
+        msg = parrot:hello()
+        assert.is_equal('parrot say hello', msg)
     end)
 
 end)
