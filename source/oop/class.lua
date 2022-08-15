@@ -24,6 +24,10 @@ local registry = require 'oop.registry'
 --- @field name string mixin name
 --- @field apply fun(self:oop.class.Mixer, class:oop.Class):oop.Class
 
+local msg_construct_arg_type_error = 'argument type invalid:%s. default constructor argument type must be table.'
+local msg_invalid_field_name_type = 'new class "%s" instance error: field name must be string, but it is "%s".'
+local msg_undefined_field = 'class "%s" is strict mode, cannot set value for undefined field "%s".'
+
 --- init an `object` with the value passed from constructor
 --- @param class oop.Class
 --- @param values table<string, any> init values
@@ -34,13 +38,22 @@ local function default_constructor(class, values)
     if not values then return object end
 
     local k = type(values)
-    assert(k == 'table',
-           ('argument type invalid:%s. default constructor argument type must be table.'):format(k))
+    assert(k == 'table', msg_construct_arg_type_error:format(k))
 
-    -- TODO validate val
-    -- TODO add default value support
+    -- TODO support singleton
+    local is_strict = meta.is_strict(class)
+    local proto = class:prototype()
+    local name = class:classname()
+
     for field, val in pairs(values) do
+        -- TODO validate val
+        -- TODO add default value support
 
+        local kind = type(field)
+        assert(kind == 'string', msg_invalid_field_name_type:format(name, kind))
+        if is_strict and not proto[field] then
+            error(msg_undefined_field:format(name, field))
+        end
         object[field] = val
     end
     return object
@@ -84,9 +97,9 @@ end
 
 --- enhance class by mixin other feature.
 --- @param c oop.Class
---- @param mixin oop.class.Mixin
+--- @param mixer oop.class.Mixer
 --- @return oop.Class
-local function mixin_class(c, mixin)
+local function mixin_class(c, mixer)
     local _name = c:classname()
     -- TODO 如果 struct 里面有 a 函数
     -- TODO 而且 class 里面又定义了 a 函数
@@ -94,6 +107,8 @@ local function mixin_class(c, mixin)
     -- TODO 这里怎么办
     return c
 end
+
+local msg_arg_type_not_string = 'argument type invalid: string or table expected, but "%s" found.'
 
 --- get class name and proto from arguments.
 --- @param mod string Lua module name define class.
@@ -106,8 +121,7 @@ local function extract(mod, ...)
     local v1 = select(1, ...)
     local k1 = type(v1)
 
-    assert(k1 == 'string' or k1 == 'table',
-           ('argument type invalid: string or table expected, but "%s" found.'):format(k1))
+    assert(k1 == 'string' or k1 == 'table', msg_arg_type_not_string:format(k1))
 
     local name, proto
     -- when first arg is string, it should be class name.
