@@ -24,9 +24,9 @@ local registry = require 'oop.registry'
 --- @field name string mixin name
 --- @field apply fun(self:oop.class.Mixer, class:oop.Class):oop.Class
 
-local msg_construct_arg_type_error = 'argument type invalid:%s. default constructor argument type must be table.'
-local msg_invalid_field_name_type = 'new class "%s" instance error: field name must be string, but it is "%s".'
-local msg_undefined_field = 'class "%s" is strict mode, cannot add undefined field "%s".'
+local invalid_construct_args = 'argument type invalid:%s. default constructor argument type must be table.'
+local invalid_field_name_type = 'new class "%s" instance error: field name must be string, but it is "%s".'
+local undefined_field = 'class "%s" is strict mode, cannot add undefined field "%s".'
 
 --- init an `object` with the value passed from constructor
 --- @param class oop.Class
@@ -38,7 +38,7 @@ local function default_constructor(class, values)
     if not values then return object end
 
     local k = type(values)
-    assert(k == 'table', msg_construct_arg_type_error:format(k))
+    assert(k == 'table', invalid_construct_args:format(k))
 
     -- TODO support singleton
     local is_strict = meta.is_strict(class)
@@ -50,9 +50,9 @@ local function default_constructor(class, values)
         -- TODO add default value support
 
         local kind = type(field)
-        assert(kind == 'string', msg_invalid_field_name_type:format(name, kind))
+        assert(kind == 'string', invalid_field_name_type:format(name, kind))
         if is_strict and not proto[field] then
-            error(msg_undefined_field:format(name, field))
+            error(undefined_field:format(name, field))
         end
         object[field] = val
     end
@@ -96,7 +96,7 @@ local function mixin_class(c, mixer)
     return c
 end
 
-local msg_arg_type_not_string = 'argument type invalid: string or table expected, but "%s" found.'
+local invalid_class_args = 'argument type invalid: string or table expected, but "%s" found.'
 
 --- get class name and proto from arguments.
 --- @param mod string Lua module name define class.
@@ -109,7 +109,7 @@ local function extract(mod, ...)
     local v1 = select(1, ...)
     local k1 = type(v1)
 
-    assert(k1 == 'string' or k1 == 'table', msg_arg_type_not_string:format(k1))
+    assert(k1 == 'string' or k1 == 'table', invalid_class_args:format(k1))
 
     local name, proto
     -- when first arg is string, it should be class name.
