@@ -17,7 +17,7 @@ end
 --- put class into registry
 --- @param class oop.Class
 --- @return boolean
-local function save_class(class)
+local function register_class(class)
     if not registry then
         _G[REGISTRY_KEY] = {}
         registry = _G[REGISTRY_KEY]
@@ -41,7 +41,15 @@ local function save_class(class)
     return true
 end
 
+--- replace class definition
+--- @param class oop.Class
+--- @return boolean
+local function replace_class(class)
+
+end
+
 return {
     get = get_class,
-    put = save_class,
+    register = register_class,
+    replace = replace_class,
 }

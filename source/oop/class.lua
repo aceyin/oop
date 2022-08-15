@@ -20,26 +20,27 @@ local registry = require 'oop.registry'
 --- @field prototype fun(o:oop.Object):oop.class.Prototype
 --- @field instanceof fun(o:oop.Object, c:oop.Class):boolean
 
---- @class oop.class.Mixin
+--- @class oop.class.Mixer
 --- @field name string mixin name
---- @field apply fun(self:oop.class.Mixin, class:oop.Class):oop.Class
+--- @field apply fun(self:oop.class.Mixer, class:oop.Class):oop.Class
 
 --- init an `object` with the value passed from constructor
---- @param
+--- @param class oop.Class
+--- @param values table<string, any> init values
 --- @return oop.Object
-local function default_constructor(values)
+local function default_constructor(class, values)
     --- @type oop.Object
     local object = {}
-
     if not values then return object end
 
     local k = type(values)
     assert(k == 'table',
            ('argument type invalid:%s. default constructor argument type must be table.'):format(k))
 
+    -- TODO validate val
+    -- TODO add default value support
     for field, val in pairs(values) do
-        -- TODO validate val
-        -- TODO add default value support
+
         object[field] = val
     end
     return object
@@ -157,7 +158,7 @@ local function new_class(_, ...)
     --- @param values table<string, any> init values
     --- @return oop.Object
     function Class:new(values)
-        return default_constructor(values)
+        return default_constructor(self, values)
     end
 
     setmetatable(Class, {
@@ -166,7 +167,7 @@ local function new_class(_, ...)
     })
 
     -- put into registry
-    registry.put(Class)
+    registry.register(Class)
 
     return Class
 end

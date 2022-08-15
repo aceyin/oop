@@ -6,6 +6,8 @@
 local module = require 'std.module'
 local mode = require 'oop.mode'
 
+local dummy = {}
+
 local CLASS_INFO = '$CLASS-INFO'
 
 local fields = {
@@ -67,7 +69,7 @@ local function add_class_info(class, mod, name, proto, overwrite)
         [fields.name] = name,
         [fields.module] = mod,
         [fields.prototype] = proto,
-        [fields.mode] = class_mode
+        [fields.mode] = class_mode,
     }
 end
 
@@ -105,9 +107,37 @@ local function get_module(class)
     return meta[fields.module]
 end
 
+--- check if class/object is specific mode.
+--- @param class oop.Class | oop.Object
+--- @param _mode string
+--- @return boolean
+local function check_mode(class, _mode)
+    assert(module.is_class(class) or module.is_object(class),
+           'param 1 must be a class or an object.')
+    local meta = class[CLASS_INFO]
+    if not meta then return false end
+    return meta[fields.mode][_mode] == true
+end
+
+--- check if class/object is strict mode.
+--- @param class oop.Class | oop.Object
+--- @return boolean
+local function is_strict(class)
+    return check_mode(class, mode.strict)
+end
+
+--- check if class/object is singleton mode.
+--- @param class oop.Class | oop.Object
+--- @return boolean
+local function is_singleton(class)
+    return check_mode(class, mode.singleton)
+end
+
 return {
     init = add_class_info,
     classname = get_name,
     prototype = get_prototype,
     module = get_module,
+    is_strict = is_strict,
+    is_singleton = is_singleton,
 }
