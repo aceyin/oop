@@ -30,7 +30,7 @@ local function apply(_self, class)
 
     meta.__index = function(c, k)
         for _, trait in pairs(_traits) do
-            local fn = trait.methods[k]
+            local fn = trait.behaviors[k]
             if fn then return fn end
         end
     end

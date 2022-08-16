@@ -4,26 +4,22 @@
 ---
 
 local name = 'traits.walkable'
-local methods = {}
-
-function methods:walk()
-    return ('%s is walking'):format(self.name)
-end
-
-function methods:info()
-    return 'walkable trait'
-end
-
-local trait = {
-    name = name,
-    methods = methods
-}
+local walkable = { name = name }
 
 --- @param class oop.Class | oop.class.Instance
 --- @return boolean
-function trait:suitable(class)
+function walkable:suitable(class)
     local prototype = class:prototype()
     return prototype.name ~= nil
 end
 
-return trait
+local behaviors = {
+    walk = function(object)
+        return ('%s is walking'):format(object.name)
+    end,
+    info = function() return name end
+}
+
+walkable.behaviors = behaviors
+
+return walkable

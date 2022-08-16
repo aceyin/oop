@@ -136,9 +136,9 @@ describe('#oop.class.tests', function()
 
     test('mixin.trait', function()
         local walkable = require 'traits.walkable'
-        local talkable = require 'traits.talkable'
+        local speakable = require 'traits.speakable'
 
-        local bird = class('bird', { name = string }) | impl { walkable, talkable }
+        local bird = class('bird', { name = string }) | impl { walkable, speakable }
         local parrot = bird {
             name = 'parrot'
         }
@@ -148,11 +148,11 @@ describe('#oop.class.tests', function()
         msg = parrot:talk()
         assert.is_equal('parrot is talking', msg)
 
-        -- walkable and talkable both has `info()` method
+        -- walkable and speakable both has `info()` method
         -- object will use the first trait's `info()` method
         -- thus: walkable.info() will be called
         msg = parrot:info()
-        assert.is_equal('walkable trait', msg)
+        assert.is_equal(walkable.name, msg)
     end)
 
 end)
