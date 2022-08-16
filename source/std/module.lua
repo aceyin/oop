@@ -52,6 +52,11 @@ local function set_type(tab, value, overwrite)
     end
 end
 
+--- @return boolean
+local function is_table(object)
+    return type(object) == 'table'
+end
+
 --- get module type
 --- @param tab table
 --- @return std.module.Type | nil
@@ -65,23 +70,35 @@ local function get_type(tab)
 end
 
 --- check if `class` is a class.
---- @param class oop.Class
+--- @param object table
 --- @return boolean
-local function is_class(class)
-    if type(class) ~= 'table' then
-        return false
-    end
-    return get_type(class) == types.class
+local function is_class(object)
+    if not is_table(object) then return false end
+    return get_type(object) == types.class
 end
 
 --- check if `object` is a object.
---- @param object oop.Object
+--- @param object table
 --- @return boolean
 local function is_object(object)
-    if type(object) ~= 'table' then
-        return false
-    end
+    if not is_table(object) then return false end
     return get_type(object) == types.object
+end
+
+--- check if `object` is a mixer instance.
+--- @param object table
+--- @return boolean
+local function is_mixer(object)
+    if not is_table(object) then return false end
+    return get_type(object) == types.mixer
+end
+
+--- check if `object` is a trait.
+--- @param object table
+--- @return boolean
+local function is_trait(object)
+    if not is_table(object) then return false end
+    return get_type(object) == types.trait
 end
 
 --- get the module name call this(`caller()`) function.
@@ -114,5 +131,7 @@ return {
     get_type = get_type,
     is_class = is_class,
     is_object = is_object,
+    is_mixer = is_mixer,
+    is_trait = is_trait,
     name = caller_name,
 }

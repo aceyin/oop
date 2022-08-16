@@ -6,7 +6,6 @@
 --- @field traits table<string, function>
 
 local mixer = require 'mixin.mixer'
-local traits = require 'trait.traits'
 
 local name = 'oop.mixer.trait'
 
@@ -20,10 +19,18 @@ local function apply(_self, class)
     if meta.__index then
         error(('class "%s" has defined __index in metatable.'):format(class:classname()))
     end
+
+    --- @type trait.Trait[]
+    local _traits = _self.traits
+    for _, trait in pairs(_traits) do
+        if not trait:suitable(class) then
+            error(('trait "%s" not suitable for class "%s"'):format(trait.name, class:classname()))
+        end
+    end
+
     meta.__index = function(c, k)
-        local _traits = _self.traits
         for _, trait in pairs(_traits) do
-            local fn = trait[k]
+            local fn = trait.methods[k]
             if fn then return fn end
         end
     end
@@ -32,23 +39,17 @@ end
 
 --- build a traits mixer.
 --- @param _self table mixer builder
---- @param param oop.Trait[]
+--- @param param trait.Trait[]
 --- @return oop.class.Mixer
 local function build(_self, param)
     local kind = type(param)
     assert(kind == 'table', ('invalid argument type:%s.'):format(kind))
-
-    -- combine all traits into one table
-    for i, trait in pairs(param) do
-        assert(traits.is_trait(trait), ('param %s is not a trait'):format(i))
-    end
 
     local instance = {
         name = name,
         apply = apply,
         traits = param,
     }
-
     mixer.init(instance)
     return instance
 end

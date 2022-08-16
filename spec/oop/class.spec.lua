@@ -52,7 +52,7 @@ describe('#oop.class.tests', function()
             }
         end
 
-        --- @type oop.Object
+        --- @type oop.class.Instance
         local lemon = plant('tree', 'lemon')
         assert.is_true(module.is_object(lemon))
         assert.is_equal('plants', lemon:classname())

@@ -6,27 +6,25 @@ local meta = require 'oop.meta'
 local module = require 'std.module'
 local registry = require 'oop.registry'
 
+--- @class oop.Object
+
 --- @alias oop.class.Prototype table<string, oop.class.PrototypeField>
 --- @alias oop.class.Mode string
---- @alias oop.class.Constructor fun(c:oop.Class, ...:any):oop.Object
+--- @alias oop.class.Constructor fun(c:oop.Class, ...:any):oop.class.Instance
 
 --- @class oop.class.PrototypeField
 --- @field type std.DataType
 --- @field option
 --- @field constraint
 
---- @class oop.Object
---- @field classname fun(o:oop.Object):string
---- @field prototype fun(o:oop.Object):oop.class.Prototype
---- @field instanceof fun(o:oop.Object, c:oop.Class):boolean
+--- @class oop.class.Instance
+--- @field classname fun(o:oop.class.Instance):string
+--- @field prototype fun(o:oop.class.Instance):oop.class.Prototype
+--- @field instanceof fun(o:oop.class.Instance, c:oop.Class):boolean
 
 --- @class oop.class.Mixer
 --- @field name string mixin name
 --- @field apply fun(self:oop.class.Mixer, class:oop.Class):oop.Class
-
---- @class oop.Trait
---- @field name string
----
 
 local invalid_construct_args = 'argument type invalid:%s. default constructor argument type must be table.'
 local invalid_field_name_type = 'new class "%s" instance error: field name must be string, but it is "%s".'
@@ -35,9 +33,9 @@ local undefined_field = 'class "%s" is strict mode, cannot add undefined field "
 --- init an `object` with the value passed from constructor
 --- @param class oop.Class
 --- @param values table<string, any> init values
---- @return oop.Object
+--- @return oop.class.Instance
 local function default_constructor(class, values)
-    --- @type oop.Object
+    --- @type oop.class.Instance
     local object = {}
     if not values then return object end
 
@@ -66,9 +64,9 @@ end
 --- constructor of a class
 --- @param class oop.Class
 --- @vararg any
---- @return oop.Object
+--- @return oop.class.Instance
 local function new_instance(class, ...)
-    --- @type oop.Object
+    --- @type oop.class.Instance
     local object = class:new(...)
 
     local mod = module.name(3)
@@ -125,11 +123,11 @@ end
 --- create a new class object with the given argument as the prototype
 --- @overload fun(c:oop.Class, name:string, proto:oop.class.Prototype):oop.Class
 --- @vararg any
---- param 1 is the name of class, optional
---- param 2 is the prototype of class
+---   param 1 is the name of class, optional
+---   param 2 is the prototype of class
 --- @return oop.Class
 local function new_class(_, ...)
-    --- @class oop.Class
+    --- @class oop.Class : oop.Object
     local Class = {}
 
     local mod = module.name(3)
@@ -157,7 +155,7 @@ local function new_class(_, ...)
 
     --- create new instance of this `Class`
     --- @param values table<string, any> init values
-    --- @return oop.Object
+    --- @return oop.class.Instance
     function Class:new(values)
         return default_constructor(self, values)
     end

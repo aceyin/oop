@@ -3,15 +3,27 @@
 --- DateTime: 2022/8/16 09:20
 ---
 
-local function talk(object)
-    return ('%s is talking'):format(object.name)
+local name = 'trait.talkable'
+
+local methods = {}
+local trait = {
+    name = name,
+    methods = methods
+}
+
+function methods:talk()
+    return ('%s is talking'):format(self.name)
 end
 
-local function info()
+function methods:info()
     return 'talkable trait'
 end
 
-return {
-    talk = talk,
-    info = info,
-}
+--- @param class oop.Class | oop.class.Instance
+--- @return boolean
+function trait:suitable(class)
+    local prototype = class:prototype()
+    return prototype.name ~= nil
+end
+
+return trait

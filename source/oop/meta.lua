@@ -13,7 +13,6 @@ local fields = {
     module = '$MODULE',
     mode = '$CLASS-MODE',
     prototype = '$PROTOTYPE',
-
 }
 
 --- extract class mode settings from prototype.
@@ -107,7 +106,7 @@ local function get_module(class)
 end
 
 --- check if class/object is specific mode.
---- @param class oop.Class | oop.Object
+--- @param class oop.Class | oop.class.Instance
 --- @param _mode string
 --- @return boolean
 local function check_mode(class, _mode)
@@ -119,14 +118,14 @@ local function check_mode(class, _mode)
 end
 
 --- check if class/object is strict mode.
---- @param class oop.Class | oop.Object
+--- @param class oop.Class | oop.class.Instance
 --- @return boolean
 local function is_strict(class)
     return check_mode(class, mode.strict)
 end
 
 --- check if class/object is singleton mode.
---- @param class oop.Class | oop.Object
+--- @param class oop.Class | oop.class.Instance
 --- @return boolean
 local function is_singleton(class)
     return check_mode(class, mode.singleton)
