@@ -1,6 +1,6 @@
 local mode = require 'oop.mode'
 local class = require 'oop.class'
-local impl = require 'mixer.impl'
+local impl = require 'mixin.impl'
 local module = require 'std.module'
 local registry = require 'oop.registry'
 
@@ -136,9 +136,23 @@ describe('#oop.class.tests', function()
 
     test('mixin.trait', function()
         local walkable = require 'traits.walkable'
+        local talkable = require 'traits.talkable'
 
-        local bird = class 'bird' | impl { walkable }
+        local bird = class('bird', { name = string }) | impl { walkable, talkable }
+        local parrot = bird {
+            name = 'parrot'
+        }
+        local msg = parrot:walk()
+        assert.is_equal('parrot is walking', msg)
 
+        msg = parrot:talk()
+        assert.is_equal('parrot is talking', msg)
+
+        -- walkable and talkable both has `info()` method
+        -- object will use the first trait's `info()` method
+        -- thus: walkable.info() will be called
+        msg = parrot:info()
+        assert.is_equal('walkable trait', msg)
     end)
 
 end)

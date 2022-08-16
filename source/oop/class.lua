@@ -92,11 +92,7 @@ end
 --- @param mixer oop.class.Mixer
 --- @return oop.Class
 local function mixin_class(c, mixer)
-    -- TODO 如果 prototype 里面有 a 函数
-    -- TODO 而且 class 里面又定义了 a 函数
-    -- TODO 然后 trait 里面也定义了 a 函数
-    -- TODO 这里怎么办
-    return c
+    return mixer:apply(c)
 end
 
 local invalid_class_args = 'argument type invalid: string or table expected, but "%s" found.'

@@ -15,11 +15,19 @@ local name = 'oop.mixer.trait'
 --- @param class oop.Class
 --- @return oop.Class
 local function apply(_self, class)
-
-    local _traits = _self.traits
-    for n, fn in pairs(traits) do
-
+    local meta = getmetatable(class)
+    -- TODO 支持多个 __index ?
+    if meta.__index then
+        error(('class "%s" has defined __index in metatable.'):format(class:classname()))
     end
+    meta.__index = function(c, k)
+        local _traits = _self.traits
+        for _, trait in pairs(_traits) do
+            local fn = trait[k]
+            if fn then return fn end
+        end
+    end
+    return class
 end
 
 --- build a traits mixer.
