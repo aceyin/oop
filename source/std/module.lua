@@ -69,6 +69,16 @@ local function get_type(tab)
     return meta[fields.type]
 end
 
+--- check if `object` is a `type` object.
+--- @param object table
+--- @param type string|number
+--- @return boolean
+local function isa(object, type)
+    if not is_table(object) then return false end
+    local t = get_type(object)
+    return t == type
+end
+
 --- check if `class` is a class.
 --- @param object table
 --- @return boolean
@@ -126,7 +136,10 @@ local function caller_name(lv)
 end
 
 return {
+    -- constant
     types = types,
+    -- public api
+    isa = isa,
     set_type = set_type,
     get_type = get_type,
     is_class = is_class,

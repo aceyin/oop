@@ -61,6 +61,14 @@ local function default_constructor(class, values)
     return object
 end
 
+--- enhance class by mixin other feature.
+--- @param c oop.Class
+--- @param mixer oop.class.Mixer
+--- @return oop.Class
+local function mixin_class(c, mixer)
+    return mixer:apply(c)
+end
+
 --- constructor of a class
 --- @param class oop.Class
 --- @vararg any
@@ -83,14 +91,6 @@ local function new_instance(class, ...)
 
     -- TODO add trait support
     return setmetatable(object, { __index = class })
-end
-
---- enhance class by mixin other feature.
---- @param c oop.Class
---- @param mixer oop.class.Mixer
---- @return oop.Class
-local function mixin_class(c, mixer)
-    return mixer:apply(c)
 end
 
 local invalid_class_args = 'argument type invalid: string or table expected, but "%s" found.'

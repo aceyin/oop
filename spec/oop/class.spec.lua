@@ -153,6 +153,30 @@ describe('#oop.class.tests', function()
         -- thus: walkable.info() will be called
         msg = parrot:info()
         assert.is_equal(walkable.name, msg)
+        registry.remove(bird)
+    end)
+
+    test('mixin.trait.with.specific.behaviors', function()
+        local walkable = require 'traits.walkable'
+        local speakable = require 'traits.speakable'
+
+        local bird = class('bird', { name = string }) | impl {
+            walkable { '', '' },
+            speakable - { '', '' }
+        }
+        local parrot = bird {
+            name = 'parrot'
+        }
+
+        local msg = parrot:walk()
+        assert.is_equal('parrot is walking', msg)
+
+        msg = parrot:talk()
+        assert.is_equal('parrot is talking', msg)
+
+        msg = parrot:info()
+        assert.is_equal(walkable.name, msg)
+        registry.remove(bird)
     end)
 
 end)
