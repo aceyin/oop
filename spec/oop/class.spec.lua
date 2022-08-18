@@ -6,19 +6,19 @@ local registry = require 'oop.registry'
 
 describe('#oop.class.tests', function()
     --- @class AnimalPrototype : oop.Object
-    local proto = {
+    local struct = {
         family = string,
-        name = string
+        name = string,
     }
 
     --- @class Animal: oop.Class
     local animal
 
     test('new.simple.class', function()
-        animal = class('animal', proto)
+        animal = class('animal', struct)
 
         assert.is_equal('animal', animal:classname())
-        assert.is_same(proto, animal:prototype())
+        assert.is_same(struct, animal:prototype())
 
         assert.is_equal('$class', module.get_type(animal))
         assert.is_true(module.is_class(animal))
@@ -161,8 +161,8 @@ describe('#oop.class.tests', function()
         local speakable = require 'traits.speakable'
 
         local bird = class('bird', { name = string }) | impl {
-            walkable { '', '' },
-            speakable - { '', '' }
+            walkable,
+            speakable
         }
         local parrot = bird {
             name = 'parrot'
