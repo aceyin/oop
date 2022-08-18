@@ -6,6 +6,7 @@
 --- @field traits table<string, function>
 
 local mixer = require 'mixin.mixer'
+local module = require 'std.module'
 
 local name = 'oop.mixer.trait'
 
@@ -28,8 +29,11 @@ local function apply(_self, class)
         end
     end
 
+    class:add_traits(table.unpack(_traits))
+
     meta.__index = function(c, k)
-        for _, trait in pairs(_traits) do
+        local traits = c:traits()
+        for _, trait in pairs(traits) do
             local fn = trait.behaviors[k]
             if fn then return fn end
         end
@@ -45,10 +49,12 @@ local function build(_self, param)
     local kind = type(param)
     assert(kind == 'table', ('invalid argument type:%s.'):format(kind))
 
+    local is_trait = module.is_trait(param)
+
     local instance = {
         name = name,
         apply = apply,
-        traits = param,
+        traits = is_trait and { param } or param,
     }
     mixer.init(instance)
     return instance

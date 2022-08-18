@@ -14,13 +14,24 @@ local module = require 'std.module'
 --- meta info
 local TRAIT_INFO = "$TRAIT-INFO"
 
-local meta = {}
+--- fields in TRAIT-INFO
+local fields = {
+    name = '$TRAIT-NAME'
+}
 
 --- add __call() meta function to support: mixin specific behavior to class
---- @param object trait.Trait
---- @param param string | string[] behavior name to mixin
+--- @param trait trait.Trait
+--- @param names string | string[] behavior name to mixin
 --- @return trait.LimitedTrait
-function meta:call(object, param) end
+local function include_behaviors(trait, names) end
+
+--- add __sub() meta function to skip some behaviors for a trait.
+--- @param trait trait.Trait
+local function exclude_behaviors(trait, names)
+
+end
+
+local meta = {}
 
 --- make a plain `object` to a `trait` object.
 --- @param object table
@@ -28,9 +39,12 @@ function meta:call(object, param) end
 local function make(object)
     module.set_type(object, module.types.trait, true)
     object[TRAIT_INFO] = {
-        name = object.name
+        [fields.name] = object.name
     }
+    setmetatable(object, meta)
     return object
 end
 
-return {}
+return {
+    make = make,
+}

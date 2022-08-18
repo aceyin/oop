@@ -3,8 +3,8 @@
 ---
 --- @alias std.meta.Type string
 
-local module = require 'std.module'
 local mode = require 'oop.mode'
+local module = require 'std.module'
 
 local CLASS_INFO = '$CLASS-INFO'
 
@@ -13,6 +13,7 @@ local fields = {
     module = '$MODULE',
     mode = '$CLASS-MODE',
     prototype = '$PROTOTYPE',
+    traits = '$TRAITS',
 }
 
 --- extract class mode settings from prototype.
@@ -53,7 +54,7 @@ end
 --- @param proto oop.class.Prototype class prototype
 --- @param overwrite boolean
 --- @return void
-local function add_class_info(class, mod, name, proto, overwrite)
+local function init_meta(class, mod, name, proto, overwrite)
     assert(module.is_class(class) or module.is_object(class),
            'param 1 must be a class or an object.')
     assert(type(name) == 'string', 'param 3 must be a string')
@@ -68,6 +69,7 @@ local function add_class_info(class, mod, name, proto, overwrite)
         [fields.module] = mod,
         [fields.prototype] = proto,
         [fields.mode] = class_mode,
+        [fields.traits] = {}
     }
 end
 
@@ -131,11 +133,44 @@ local function is_singleton(class)
     return check_mode(class, mode.singleton)
 end
 
+--- set traits to this class
+--- @param class oop.Class
+--- @vararg trait.Trait
+--- @return void
+local function add_traits(class, ...)
+    assert(module.is_class(class), 'can set traits to `class` only.')
+    local n = select('#', ...)
+    if n == 0 then return end
+
+    local traits = class[CLASS_INFO][fields.traits]
+    for i, trait in pairs({ ... }) do
+        if not module.is_trait(trait) then
+            error(('param %s is not a trait'):format(i))
+        end
+        local name = trait.name
+        traits[name] = trait
+    end
+end
+
+--- get the traits this `class` implemented.
+--- if not name specified, return all traits.
+--- @param class oop.Class
+--- @param name string
+--- @return trait.Trait|trait.Trait[]
+local function get_traits(class, name)
+    assert(module.is_class(class), 'first argument must be a `class`.')
+    local traits = class[CLASS_INFO][fields.traits]
+    if not name then return traits end
+    return traits[name]
+end
+
 return {
-    init = add_class_info,
+    init = init_meta,
     classname = get_name,
     prototype = get_prototype,
     module = get_module,
     is_strict = is_strict,
     is_singleton = is_singleton,
+    add_traits = add_traits,
+    traits = get_traits,
 }

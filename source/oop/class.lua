@@ -130,10 +130,10 @@ local function new_class(_, ...)
     --- @class oop.Class : oop.Object
     local Class = {}
 
-    local mod = module.name(3)
-    local name, proto = extract(mod, ...)
+    local _module = module.name(3)
+    local _name, _proto = extract(_module, ...)
     module.set_type(Class, module.types.class)
-    meta.init(Class, mod, name, proto)
+    meta.init(Class, _module, _name, _proto)
 
     --- get class name
     --- @return string
@@ -151,6 +151,21 @@ local function new_class(_, ...)
     --- @return string
     function Class:module()
         return meta.module(self)
+    end
+
+    --- set traits to this class
+    --- @vararg trait.Trait
+    --- @return void
+    function Class:add_traits(...)
+        return meta.add_traits(...)
+    end
+
+    --- get the traits this `class` implemented.
+    --- if not name specified, return all traits.
+    --- @param name string
+    --- @return trait.Trait|trait.Trait[]
+    function Class:traits(name)
+        return meta.traits(self, name)
     end
 
     --- create new instance of this `Class`
