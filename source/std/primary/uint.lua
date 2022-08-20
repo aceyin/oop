@@ -4,13 +4,19 @@
 --- DateTime: 2022/8/20 16:34
 ---
 
-local integer = require 'std.integer'
+local impl = require 'mixin.impl'
+local class = require 'class.class'
+local integer = require 'trait.integer'
 
 local MIN = 0
 local MAX = 4294967295
 
---- @type std.primary.Integer
-local uint = integer 'std.primary.uint'
+--- @class std.primary.uint : trait.integer
+local struct = {
+    val = { 'number' }
+}
+
+local uint = class('std.primary.uint', struct) | impl { integer }
 
 -- implement the abstract function.
 --- @return number

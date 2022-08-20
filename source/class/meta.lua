@@ -1,5 +1,5 @@
 ---
---- meta info of oop.Class.
+--- meta info of std.Class.
 ---
 --- @alias std.meta.Type string
 
@@ -18,7 +18,7 @@ local fields = {
 }
 
 --- extract class mode settings from prototype.
---- @param proto oop.class.Prototype
+--- @param proto class.Prototype
 --- @return table<string, boolean>
 local function extract_class_mode(proto)
     local _mode = {}
@@ -49,10 +49,10 @@ local function extract_class_mode(proto)
 end
 
 --- add(init) class info for a class.
---- @param class oop.Class
+--- @param class std.Class
 --- @param mod string Lua module name this class defined
 --- @param name string class name
---- @param proto oop.class.Prototype class prototype
+--- @param proto class.Prototype class prototype
 --- @param overwrite boolean
 --- @return void
 local function init_meta(class, mod, name, proto, overwrite)
@@ -75,7 +75,7 @@ local function init_meta(class, mod, name, proto, overwrite)
 end
 
 --- get class name
---- @param class oop.Class
+--- @param class std.Class
 --- @return string | nil
 local function get_name(class)
     assert(module.is_class(class) or module.is_object(class),
@@ -88,8 +88,8 @@ local function get_name(class)
 end
 
 --- get a struct of a class
---- @param class oop.Class
---- @return oop.class.Prototype
+--- @param class std.Class
+--- @return class.Prototype
 local function get_prototype(class)
     assert(module.is_class(class) or module.is_object(class),
            'param 1 must be a class or an object.')
@@ -99,7 +99,7 @@ local function get_prototype(class)
 end
 
 --- get the Lua module where this `class` defined.
---- @param class oop.Class
+--- @param class std.Class
 --- @return string|nil
 local function get_module(class)
     assert(module.is_class(class), 'param 1 must be a class.')
@@ -109,7 +109,7 @@ local function get_module(class)
 end
 
 --- check if class/object is specific mode.
---- @param class oop.Class | oop.class.Instance
+--- @param class std.Class | class.Instance
 --- @param _mode string
 --- @return boolean
 local function check_mode(class, _mode)
@@ -121,21 +121,21 @@ local function check_mode(class, _mode)
 end
 
 --- check if class/object is strict mode.
---- @param class oop.Class | oop.class.Instance
+--- @param class std.Class | class.Instance
 --- @return boolean
 local function is_strict(class)
     return check_mode(class, mode.strict)
 end
 
 --- check if class/object is singleton mode.
---- @param class oop.Class | oop.class.Instance
+--- @param class std.Class | class.Instance
 --- @return boolean
 local function is_singleton(class)
     return check_mode(class, mode.singleton)
 end
 
 --- set traits to this class
---- @param class oop.Class
+--- @param class std.Class
 --- @param traits table<string,trait.Trait>
 --- @return void
 local function add_traits(class, traits)
@@ -158,7 +158,7 @@ end
 
 --- get the traits this `class` implemented.
 --- if not name specified, return all traits.
---- @param class oop.Class
+--- @param class std.Class
 --- @param name string
 --- @return trait.Trait|trait.Trait[]
 local function get_traits(class, name)

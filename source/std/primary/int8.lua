@@ -3,13 +3,19 @@
 --- DateTime: 2022/8/20 16:34
 ---
 
-local integer = require 'std.integer'
+local impl = require 'mixin.impl'
+local class = require 'class.class'
+local integer = require 'trait.integer'
 
 local MIN = -128
 local MAX = 127
 
---- @type std.primary.Integer
-local int8 = integer 'std.primary.int8'
+--- @class std.primary.int8 : trait.integer
+local struct = {
+    val = { 'number' }
+}
+
+local int8 = class('std.primary.int8', struct) | impl { integer }
 
 -- implement the abstract function.
 --- @return number

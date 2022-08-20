@@ -6,32 +6,32 @@ local meta = require 'class.meta'
 local module = require 'std.module'
 local registry = require 'class.registry'
 
---- @alias oop.Object table
+--- @alias std.Object table
 
---- @alias oop.class.Prototype table<string, oop.class.PrototypeField>
---- @alias oop.class.Mode string
---- @alias oop.class.Constructor fun(c:oop.Class, ...:any):oop.class.Instance
+--- @alias class.Prototype table<string, class.PrototypeField>
+--- @alias class.Mode string
+--- @alias class.Constructor fun(c:std.Class, ...:any):class.Instance
 
---- @class oop.class.PrototypeField
---- @field type std.DataType
+--- @class class.PrototypeField
+--- @field type std.Type
 --- @field option
 --- @field constraint
 
---- @class oop.class.Instance
---- @field classname fun(o:oop.class.Instance):string
---- @field prototype fun(o:oop.class.Instance):oop.class.Prototype
---- @field instanceof fun(o:oop.class.Instance, c:oop.Class):boolean
+--- @class class.Instance
+--- @field classname fun(o:class.Instance):string
+--- @field prototype fun(o:class.Instance):class.Prototype
+--- @field instanceof fun(o:class.Instance, c:std.Class):boolean
 
 local invalid_construct_args = 'argument type invalid:%s. default constructor argument type must be table.'
 local invalid_field_name_type = 'new class "%s" instance error: field name must be string, but it is "%s".'
 local undefined_field = 'class "%s" is strict mode, cannot add undefined field "%s".'
 
 --- init an `object` with the value passed from constructor
---- @param class oop.Class
+--- @param class std.Class
 --- @param values table<string, any> init values
---- @return oop.class.Instance
+--- @return class.Instance
 local function default_constructor(class, values)
-    --- @type oop.class.Instance
+    --- @type class.Instance
     local object = {}
     if not values then return object end
 
@@ -58,19 +58,19 @@ local function default_constructor(class, values)
 end
 
 --- mixin mixers for this `class`.
---- @param c oop.Class
+--- @param c std.Class
 --- @param mixer mixin.Mixer
---- @return oop.Class
+--- @return std.Class
 local function apply_mixer(c, mixer)
     return mixer:apply(c)
 end
 
 --- constructor of a class
---- @param class oop.Class
+--- @param class std.Class
 --- @vararg any
---- @return oop.class.Instance
+--- @return class.Instance
 local function new_instance(class, ...)
-    --- @type oop.class.Instance
+    --- @type class.Instance
     local object = class:new(...)
 
     local mod = module.name(3)
@@ -78,7 +78,7 @@ local function new_instance(class, ...)
     meta.init(object, mod, class:classname(), class:prototype())
 
     --- check if this object is an instance of `class`.
-    --- @param c oop.Class
+    --- @param c std.Class
     --- @return boolean
     function object:instanceof(c)
         if meta.classname(self) == nil then return false end
@@ -117,13 +117,13 @@ local function extract(mod, ...)
 end
 
 --- create a new class object with the given argument as the prototype
---- @overload fun(c:oop.Class, name:string, proto:oop.class.Prototype):oop.Class
+--- @overload fun(c:std.Class, name:string, proto:class.Prototype):std.Class
 --- @vararg any
 ---   param 1 is the name of class, optional
 ---   param 2 is the prototype of class
---- @return oop.Class
+--- @return std.Class
 local function new_class(_, ...)
-    --- @class oop.Class : oop.Object
+    --- @class std.Class : std.Object
     local Class = {}
 
     local _module = module.name(3)
@@ -138,7 +138,7 @@ local function new_class(_, ...)
     end
 
     --- get struct of this class.
-    --- @return oop.class.Prototype
+    --- @return class.Prototype
     function Class:prototype()
         return meta.prototype(self)
     end
@@ -166,7 +166,7 @@ local function new_class(_, ...)
 
     --- create new instance of this `Class`
     --- @param values table<string, any> init values
-    --- @return oop.class.Instance
+    --- @return class.Instance
     function Class:new(values)
         return default_constructor(self, values)
     end

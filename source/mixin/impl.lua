@@ -2,7 +2,7 @@
 --- traits mixer
 ---
 
---- @class oop.mixin.TraitMixer : mixin.Mixer
+--- @class mixin.TraitMixer : mixin.Mixer
 --- @field traits table<string, function>
 
 local mixer = require 'mixin.mixer'
@@ -11,8 +11,8 @@ local raise = require 'exception.raise'
 local impl = mixer 'mixin.impl'
 
 --- mixin traits to class
---- @param class oop.Class
---- @return oop.Class
+--- @param class std.Class
+--- @return std.Class
 function impl:apply(class)
     local meta = getmetatable(class)
     -- TODO 支持多个 __index ?
