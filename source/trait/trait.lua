@@ -3,7 +3,7 @@
 ---
 
 local todo = require 'std.lib.todo'
-local module = require 'std.module'
+local module = require 'std.lib.module'
 local raise = require 'std.lib.raise'
 
 --- @class trait.Trait
