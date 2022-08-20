@@ -152,7 +152,7 @@ describe('#oop.class.tests', function()
         -- object will use the first trait's `info()` method
         -- thus: walkable.info() will be called
         msg = parrot:info()
-        assert.is_equal(walkable.name, msg)
+        assert.is_equal(parrot.name, msg)
         registry.remove(bird)
     end)
 
@@ -175,7 +175,7 @@ describe('#oop.class.tests', function()
         assert.is_equal('parrot is talking', msg)
 
         msg = parrot:info()
-        assert.is_equal(walkable.name, msg)
+        assert.is_equal(parrot.name, msg)
         registry.remove(bird)
     end)
 

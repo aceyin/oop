@@ -24,7 +24,7 @@ local function apply(_self, class)
     --- @type trait.Trait[]
     local _traits = _self.traits
     for _, trait in pairs(_traits) do
-        if not trait:suitable(class) then
+        if not trait.suitable(class) then
             error(('trait "%s" not suitable for class "%s"'):format(trait.name, class:classname()))
         end
     end

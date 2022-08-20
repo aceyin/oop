@@ -6,7 +6,7 @@ local meta = require 'oop.meta'
 local module = require 'std.module'
 local registry = require 'oop.registry'
 
---- @class oop.Object
+--- @alias oop.Object table
 
 --- @alias oop.class.Prototype table<string, oop.class.PrototypeField>
 --- @alias oop.class.Mode string
@@ -78,7 +78,7 @@ local function new_instance(class, ...)
     local object = class:new(...)
 
     local mod = module.name(3)
-    module.set_type(object, module.types.object)
+    module.init(object, module.types.object)
     meta.init(object, mod, class:classname(), class:prototype())
 
     --- check if this object is an instance of `class`.
@@ -132,7 +132,7 @@ local function new_class(_, ...)
 
     local _module = module.name(3)
     local _name, _proto = extract(_module, ...)
-    module.set_type(Class, module.types.class)
+    module.init(Class, module.types.class)
     meta.init(Class, _module, _name, _proto)
 
     --- get class name
@@ -157,7 +157,7 @@ local function new_class(_, ...)
     --- @vararg trait.Trait
     --- @return void
     function Class:add_traits(...)
-        return meta.add_traits(...)
+        return meta.add_traits(self, ...)
     end
 
     --- get the traits this `class` implemented.

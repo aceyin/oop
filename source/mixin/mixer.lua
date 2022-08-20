@@ -11,7 +11,7 @@ local MIXER_INFO = '$MIXER-INFO'
 --- @return oop.class.Mixer
 local function init(object)
     assert(type(object) == 'table', 'object must be a table')
-    module.set_type(object, module.types.mixer, true)
+    module.init(object, module.types.mixer, true)
     object[MIXER_INFO] = {}
     return object
 end

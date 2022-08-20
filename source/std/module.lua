@@ -32,23 +32,23 @@ local types = {
     trait = '$trait',
 }
 
---- set the module type meta of given table.
---- @param tab table
---- @param value std.meta.Type
+--- init the `mod` by adding `$MODULE-INFO` attribute.
+--- @param mod table
+--- @param kind std.meta.Type
 --- @param overwrite boolean
 --- @return void
-local function set_type(tab, value, overwrite)
-    assert(type(tab) == 'table', 'param 1 must be a Lua table')
-    assert(type(value) == 'string', 'param 2 must be a string')
-    local meta = tab[MODULE_INFO]
+local function init_module(mod, kind, overwrite)
+    assert(type(mod) == 'table', 'param 1 must be a Lua table')
+    assert(type(kind) == 'string', 'param 2 must be a string')
+    local meta = mod[MODULE_INFO]
     local key = fields.type
 
     if not meta then
-        tab[MODULE_INFO] = { [key] = value }
+        mod[MODULE_INFO] = { [key] = kind }
     else
         local old = meta[key]
         if overwrite or not old then
-            meta[key] = value
+            meta[key] = kind
         end
     end
 end
@@ -141,7 +141,7 @@ return {
     types = types,
     -- public api
     isa = isa,
-    set_type = set_type,
+    init = init_module,
     get_type = get_type,
     is_class = is_class,
     is_object = is_object,
