@@ -1,10 +1,10 @@
 ---
 --- a Prototype based Class System.
 ---
-local mode = require 'oop.mode'
-local meta = require 'oop.meta'
+local mode = require 'class.mode'
+local meta = require 'class.meta'
 local module = require 'std.module'
-local registry = require 'oop.registry'
+local registry = require 'class.registry'
 
 --- @alias oop.Object table
 

@@ -1,4 +1,4 @@
-# oop
+# class
 
 ## TODO
 

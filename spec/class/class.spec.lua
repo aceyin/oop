@@ -1,8 +1,8 @@
-local mode = require 'oop.mode'
-local class = require 'oop.class'
+local mode = require 'class.mode'
+local class = require 'class.class'
 local impl = require 'mixin.impl'
 local module = require 'std.module'
-local registry = require 'oop.registry'
+local registry = require 'class.registry'
 
 describe('#oop.class.tests', function()
     --- @class AnimalPrototype : oop.Object
@@ -20,13 +20,13 @@ describe('#oop.class.tests', function()
         assert.is_equal('animal', animal:classname())
         assert.is_same(struct, animal:prototype())
 
-        assert.is_equal('$class', module.get_type(animal))
+        assert.is_equal('$std.type.class', module.get_type(animal))
         assert.is_true(module.is_class(animal))
         assert.is_false(module.is_object(animal))
 
         local module_info = animal['$MODULE-INFO']
         assert.is_not_nil(module_info)
-        assert.is_equal('$class', module_info['$TYPE'])
+        assert.is_equal('$std.type.class', module_info['$TYPE'])
 
         local class_info = animal['$CLASS-INFO']
         assert.is_not_nil(class_info)

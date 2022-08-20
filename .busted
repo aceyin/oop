@@ -7,9 +7,9 @@ return {
     pattern = ".spec.lua",
     lpath="source/?.lua;source/?/?.lua;spec/?.lua;spec/?/?.lua"
   },
-  oop = {
-    tags = "oop",
-    ROOT = {"spec/oop"},
+  class = {
+    tags = "class",
+    ROOT = {"spec/class"},
     verbose = true
   }
 }
