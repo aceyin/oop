@@ -5,6 +5,7 @@
 
 local mode = require 'oop.mode'
 local module = require 'std.module'
+local raise = require 'std.lib.raise'
 
 local CLASS_INFO = '$CLASS-INFO'
 
@@ -135,20 +136,23 @@ end
 
 --- set traits to this class
 --- @param class oop.Class
---- @vararg trait.Trait
+--- @param traits table<string,trait.Trait>
 --- @return void
-local function add_traits(class, ...)
+local function add_traits(class, traits)
     assert(module.is_class(class), 'can set traits to `class` only.')
-    local n = select('#', ...)
-    if n == 0 then return end
+    if not next(traits) then return end
 
-    local traits = class[CLASS_INFO][fields.traits]
-    for i, trait in pairs({ ... }) do
+    -- TODO support other mixer type(more than `trait`)
+    local _traits = class[CLASS_INFO][fields.traits]
+    for i, trait in pairs(traits) do
         if not module.is_trait(trait) then
-            error(('param %s is not a trait'):format(i))
+            raise('param %s is not a trait', i)
         end
         local name = trait.name
-        traits[name] = trait
+        if _traits[name] then
+            raise('duplicate trait "%s" for class "%s"', name, class:classname())
+        end
+        _traits[name] = trait
     end
 end
 
@@ -171,6 +175,6 @@ return {
     module = get_module,
     is_strict = is_strict,
     is_singleton = is_singleton,
-    add_traits = add_traits,
+    mixin = add_traits,
     traits = get_traits,
 }

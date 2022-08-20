@@ -22,10 +22,6 @@ local registry = require 'oop.registry'
 --- @field prototype fun(o:oop.class.Instance):oop.class.Prototype
 --- @field instanceof fun(o:oop.class.Instance, c:oop.Class):boolean
 
---- @class oop.class.Mixer
---- @field name string mixin name
---- @field apply fun(self:oop.class.Mixer, class:oop.Class):oop.Class
-
 local invalid_construct_args = 'argument type invalid:%s. default constructor argument type must be table.'
 local invalid_field_name_type = 'new class "%s" instance error: field name must be string, but it is "%s".'
 local undefined_field = 'class "%s" is strict mode, cannot add undefined field "%s".'
@@ -61,11 +57,11 @@ local function default_constructor(class, values)
     return object
 end
 
---- enhance class by mixin other feature.
+--- mixin mixers for this `class`.
 --- @param c oop.Class
---- @param mixer oop.class.Mixer
+--- @param mixer mixin.Mixer
 --- @return oop.Class
-local function mixin_class(c, mixer)
+local function apply_mixer(c, mixer)
     return mixer:apply(c)
 end
 
@@ -153,11 +149,11 @@ local function new_class(_, ...)
         return meta.module(self)
     end
 
-    --- set traits to this class
-    --- @vararg trait.Trait
+    --- mixin features for this `class`.
+    --- @param traits table<string,trait.Trait>
     --- @return void
-    function Class:add_traits(...)
-        return meta.add_traits(self, ...)
+    function Class:mixin(traits)
+        return meta.mixin(self, traits)
     end
 
     --- get the traits this `class` implemented.
@@ -177,7 +173,7 @@ local function new_class(_, ...)
 
     setmetatable(Class, {
         __call = new_instance,
-        __bor = mixin_class,
+        __bor = apply_mixer,
     })
 
     -- put into registry
