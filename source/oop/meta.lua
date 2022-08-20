@@ -4,8 +4,8 @@
 --- @alias std.meta.Type string
 
 local mode = require 'oop.mode'
-local module = require 'std.lib.module'
-local raise = require 'std.lib.raise'
+local module = require 'lib.module'
+local raise = require 'lib.raise'
 
 local CLASS_INFO = '$CLASS-INFO'
 

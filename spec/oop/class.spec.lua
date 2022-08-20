@@ -1,7 +1,7 @@
 local mode = require 'oop.mode'
 local class = require 'oop.class'
 local impl = require 'mixin.impl'
-local module = require 'std.lib.module'
+local module = require 'lib.module'
 local registry = require 'oop.registry'
 
 describe('#oop.class.tests', function()

@@ -6,7 +6,7 @@
 --- @field traits table<string, function>
 
 local mixer = require 'mixin.mixer'
-local raise = require 'std.lib.raise'
+local raise = require 'lib.raise'
 
 local impl = mixer 'mixin.impl'
 

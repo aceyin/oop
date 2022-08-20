@@ -4,7 +4,7 @@
 --- DateTime: 2022/8/20 10:01
 ---
 
-local raise = require 'std.lib.raise'
+local raise = require 'lib.raise'
 
 --- report an error
 local function todo()

@@ -4,7 +4,7 @@
 --- DateTime: 2022/8/20 10:15
 ---
 
-local serial = require 'std.lib.serial'
+local serial = require 'lib.serial'
 local fmt = string.format
 
 local raise = {}
