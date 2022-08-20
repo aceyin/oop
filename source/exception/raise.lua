@@ -13,7 +13,7 @@ local raise = {}
 --- @param tpl string message template
 --- @vararg any message args
 --- @return void
-local function raise_error(tpl, ...)
+local function raise_error(_, tpl, ...)
     local argn = select('#', ...)
     if not argn then error(tpl) end
     local args = {}

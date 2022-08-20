@@ -2,9 +2,9 @@
 --- traits util module.
 ---
 
-local todo = require 'lib.todo'
-local module = require 'lib.module'
-local raise = require 'lib.raise'
+local todo = require 'exception.todo'
+local module = require 'std.module'
+local raise = require 'exception.raise'
 
 --- @class trait.Trait
 --- @field name string trait name

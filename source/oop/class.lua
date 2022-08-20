@@ -3,7 +3,7 @@
 ---
 local mode = require 'oop.mode'
 local meta = require 'oop.meta'
-local module = require 'lib.module'
+local module = require 'std.module'
 local registry = require 'oop.registry'
 
 --- @alias oop.Object table

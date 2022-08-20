@@ -3,7 +3,7 @@
 --- DateTime: 2022/8/14 10:20
 ---
 
---- @alias std.module.Type string
+--- @alias std.Type string 类型名
 --- @alias std.error.Message
 
 
@@ -20,16 +20,18 @@ local fields = {
 }
 
 local types = {
-    --- @type std.module.Type a class module
-    class = '$class',
-    --- @type std.module.Type a object
-    object = '$object',
-    --- @type std.module.Type a normal Lua module
-    module = '$module',
-    --- @type std.module.Type
-    mixer = '$mixer',
-    --- @type std.module.Type
-    trait = '$trait',
+    --- @type std.Type a class module
+    class = '$std.type.class',
+    --- @type std.Type a object
+    object = '$std.type.object',
+    --- @type std.Type 普通 Lua 模块
+    module = '$std.type.module',
+    --- @type std.Type mixer 类型
+    mixer = '$std.type.mixer',
+    --- @type std.Type trait 类型
+    trait = '$std.type.trait',
+    --- @type std.Type 基本数据类型
+    primary = '$std.type.primary'
 }
 
 --- init the `mod` by adding `$MODULE-INFO` attribute.
@@ -60,7 +62,7 @@ end
 
 --- get module type
 --- @param tab table
---- @return std.module.Type | nil
+--- @return std.Type | nil
 local function get_type(tab)
     assert(type(tab) == 'table', 'param 1 must be a table')
     local meta = tab[MODULE_INFO]

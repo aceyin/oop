@@ -4,7 +4,7 @@
 --- DateTime: 2022/8/14 18:55
 ---
 
-local module = require 'lib.module'
+local module = require 'std.module'
 
 local REGISTRY_KEY = 'oop.class.local.registry'
 

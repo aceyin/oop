@@ -4,7 +4,7 @@
 --- DateTime: 2022/8/20 10:01
 ---
 
-local raise = require 'lib.raise'
+local raise = require 'exception.raise'
 
 --- report an error
 local function todo()
