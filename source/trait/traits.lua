@@ -23,7 +23,7 @@ local fields = {
 --- @param trait trait.Trait
 --- @param names string | string[] behavior name to mixin
 --- @return trait.LimitedTrait
-local function include_behaviors(trait, names) end
+local function specific_behaviors(trait, names) end
 
 --- add __sub() meta function to skip some behaviors for a trait.
 --- @param trait trait.Trait
@@ -31,7 +31,10 @@ local function exclude_behaviors(trait, names)
 
 end
 
-local meta = {}
+local meta = {
+    __call = specific_behaviors,
+    __sub = exclude_behaviors,
+}
 
 --- make a plain `object` to a `trait` object.
 --- @param object table
