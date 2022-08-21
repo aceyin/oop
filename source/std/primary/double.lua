@@ -8,22 +8,22 @@ local impl = require 'mixin.impl'
 local class = require 'class.class'
 local numeric = require 'trait.numeric'
 
-local MIN = 0
-local MAX = 18446744073709551615
-local classname = 'std.primary.uint64'
+local MIN = 2.2250738585072014E-308
+local MAX = 1.7976931348623158E+308
+local classname = 'std.primary.double'
 
---- @class std.primary.uint64 : trait.integer
+--- @class std.primary.double : std.primary.numeric
 local struct = {
     val = { 'number' }
 }
 
-local uint64 = class(classname, struct) | impl { numeric }
+local int = class(classname, struct) | impl { numeric }
 
 -- implement the abstract function.
 --- @return number
-function uint64:min() return MIN end
+function int:min() return MIN end
 
 --- @return number
-function uint64:max() return MAX end
+function int:max() return MAX end
 
-return uint64
+return int

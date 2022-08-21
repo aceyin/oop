@@ -5,7 +5,7 @@
 
 local impl = require 'mixin.impl'
 local class = require 'class.class'
-local number = require 'trait.number'
+local numeric = require 'trait.numeric'
 
 local MIN = 0
 local MAX = 255
@@ -16,7 +16,7 @@ local struct = {
     val = { 'number' }
 }
 
-local uint8 = class(classname, struct) | impl { number }
+local uint8 = class(classname, struct) | impl { numeric }
 
 -- implement the abstract function.
 --- @return number

@@ -4,7 +4,7 @@
 --- DateTime: 2022/8/20 16:39
 ---
 
---- @class std.primary.number : trait.integer
+--- @class std.primary.numeric : trait.numeric
 --- @field val number
 
 local raise = require 'exception.raise'
