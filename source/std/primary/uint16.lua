@@ -5,17 +5,18 @@
 
 local impl = require 'mixin.impl'
 local class = require 'class.class'
-local integer = require 'trait.integer'
+local number = require 'trait.number'
 
 local MIN = 0
 local MAX = 65535
+local classname = 'std.primary.uint16'
 
 --- @class std.primary.uint16 : trait.integer
 local struct = {
     val = { 'number' }
 }
 
-local uint16 = class('std.primary.uint16', struct) | impl { integer }
+local uint16 = class(classname, struct) | impl { number }
 
 -- implement the abstract function.
 --- @return number
