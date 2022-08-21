@@ -20,11 +20,11 @@ describe('#std.primary.int8.tests', function()
 
         assert.has_error(function()
             val = int8:from(258)
-        end, 'data overflow: std.primary.int8 valid range [-128, 127], actual value:258')
+        end, '258 exceed std.primary.int8 range [-128, 127]')
 
         assert.has_error(function()
             val = int8:from(-256)
-        end, 'data overflow: std.primary.int8 valid range [-128, 127], actual value:-256')
+        end, '-256 exceed std.primary.int8 range [-128, 127]')
     end)
 
     test('new.instance', function()
