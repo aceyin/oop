@@ -4,6 +4,7 @@
 local mode = require 'class.mode'
 local meta = require 'class.meta'
 local module = require 'std.module'
+local raise = require 'exception.raise'
 local registry = require 'class.registry'
 
 --- @alias std.Object table
@@ -70,8 +71,13 @@ end
 --- @vararg any
 --- @return class.Instance
 local function new_instance(class, ...)
+    local constructor = class.new
+    if constructor and type(constructor) ~= 'function' then
+        raise('constructor or class "%s" is not a function.', class:classname())
+    end
+    constructor = constructor or default_constructor
     --- @type class.Instance
-    local object = class:new(...)
+    local object = constructor(class, ...)
 
     local mod = module.name(3)
     module.init(object, module.types.object)
@@ -162,13 +168,6 @@ local function new_class(_, ...)
     --- @return trait.Trait|trait.Trait[]
     function Class:traits(name)
         return meta.traits(self, name)
-    end
-
-    --- create new instance of this `Class`
-    --- @param values table<string, any> init values
-    --- @return class.Instance
-    function Class:new(values)
-        return default_constructor(self, values)
     end
 
     setmetatable(Class, {
