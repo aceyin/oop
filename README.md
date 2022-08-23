@@ -3,14 +3,10 @@
 ## TODO
 
   - class static field
-    
-    for example:
-  
-    ```
-    class 'walkable' {
-        static "name": string,
-        suitable = fn,
-        behaviors = map {string, fn}
-    }
-    
-    ```
+  - field data type
+  - verify support
+  - implement `std.collection`
+  - implement `std.string_buffer`
+  - hot-reload support
+  - singleton
+  - object storage

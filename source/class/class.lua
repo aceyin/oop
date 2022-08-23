@@ -91,7 +91,6 @@ local function new_instance(class, ...)
         return meta.classname(c) == meta.classname(self)
     end
 
-    -- TODO add trait support
     return setmetatable(object, { __index = class })
 end
 
