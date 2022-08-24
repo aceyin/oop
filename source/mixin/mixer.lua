@@ -6,7 +6,7 @@
 --- @class mixin.Mixer
 --- @field name string mixin name
 --- @field traits table<string, trait.Trait>
---- @field apply fun(self:mixin.Mixer, class:std.Class):std.Class
+--- @field apply fun(self:mixin.Mixer, class:class.Class):class.Class
 
 local module = require 'std.module'
 local todo = require 'exception.todo'
@@ -81,8 +81,8 @@ local function new_mixer(_, name)
 
     --- apply this `mixer` to `class`.
     --- @param m mixin.Mixer
-    --- @param class std.Class
-    --- @return std.Class
+    --- @param class class.Class
+    --- @return class.Class
     function mixer:apply(m, class)
         todo()
     end

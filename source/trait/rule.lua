@@ -9,13 +9,13 @@ local raise = require 'exception.raise'
 --- @class trait.rule
 local rule = trait 'trait.rule'
 
---- @param class std.Class
+--- @param class class.Class
 --- @return boolean
 function rule:suitable(class)
     return true
 end
 
---- @param object std.Object
+--- @param object class.Object
 --- @return boolean,std.error.Message
 function rule:verify(object)
     raise('rule %s should overwrite "verify" method', object:classname())

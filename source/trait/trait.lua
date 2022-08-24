@@ -7,8 +7,8 @@ local raise = require 'exception.raise'
 
 --- @class trait.Trait
 --- @field name string trait name
---- @field suitable fun(c:std.Class):boolean check if current trait suit for class.
---- @field behaviors table<string, fun(s:std.Object, ...:any):any> trait shared behaviors
+--- @field suitable fun(c:class.Class):boolean check if current trait suit for class.
+--- @field behaviors table<string, fun(s:class.Object, ...:any):any> trait shared behaviors
 
 --- @class trait.LimitedTrait
 
@@ -35,7 +35,7 @@ end
 --- add behavior(method) to `trait`
 --- @param trait trait.Trait
 --- @param name string method name
---- @param fn fun(c:std.Class,...:any):any
+--- @param fn fun(c:class.Class,...:any):any
 --- @return void
 local function add_behavior(trait, name, fn)
     assert(type(name) == 'string', 'behavior name must be `string`.')
@@ -77,7 +77,7 @@ local function new_trait(_, name)
     module.init(trait, module.types.trait, true)
 
     --- test if this `trait` is suitable for `class`.
-    --- @param _ std.Class
+    --- @param _ class.Class
     --- @return boolean
     function trait.suitable(_)
         raise('%s should overwrite "suitable()" method', name)

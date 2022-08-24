@@ -7,11 +7,11 @@ local module = require 'std.module'
 local raise = require 'exception.raise'
 local registry = require 'class.registry'
 
---- @alias std.Object table
+--- @alias class.Object table
 
 --- @alias class.Struct table<string, class.StructField>
 --- @alias class.Mode string
---- @alias class.Constructor fun(c:std.Class, ...:any):class.Instance
+--- @alias class.Constructor fun(c:class.Class, ...:any):class.Instance
 
 --- @class class.StructField
 --- @field type std.Type
@@ -21,14 +21,14 @@ local registry = require 'class.registry'
 --- @class class.Instance
 --- @field classname fun(o:class.Instance):string
 --- @field struct fun(o:class.Instance):class.Struct
---- @field instanceof fun(o:class.Instance, c:std.Class):boolean
+--- @field instanceof fun(o:class.Instance, c:class.Class):boolean
 
 local invalid_construct_args = 'argument type invalid:%s. default constructor argument type must be table.'
 local invalid_field_name_type = 'new class "%s" instance error: field name must be string, but it is "%s".'
 local undefined_field = 'class "%s" is strict mode, cannot add undefined field "%s".'
 
 --- init an `object` with the value passed from constructor
---- @param class std.Class
+--- @param class class.Class
 --- @param values table<string, any> init values
 --- @return class.Instance
 local function default_constructor(class, values)
@@ -59,15 +59,15 @@ local function default_constructor(class, values)
 end
 
 --- mixin mixers for this `class`.
---- @param c std.Class
+--- @param c class.Class
 --- @param mixer mixin.Mixer
---- @return std.Class
+--- @return class.Class
 local function apply_mixer(c, mixer)
     return mixer:apply(c)
 end
 
 --- constructor of a class
---- @param class std.Class
+--- @param class class.Class
 --- @vararg any
 --- @return class.Instance
 local function new_instance(class, ...)
@@ -84,7 +84,7 @@ local function new_instance(class, ...)
     meta.init(object, mod, class:classname(), class:struct())
 
     --- check if this object is an instance of `class`.
-    --- @param c std.Class
+    --- @param c class.Class
     --- @return boolean
     function object:instanceof(c)
         if meta.classname(self) == nil then return false end
@@ -122,13 +122,13 @@ local function extract(mod, ...)
 end
 
 --- create a new class object with the given argument as the struct
---- @overload fun(c:std.Class, name:string, proto:class.Struct):std.Class
+--- @overload fun(c:class.Class, name:string, proto:class.Struct):class.Class
 --- @vararg any
 ---   param 1 is the name of class, optional
 ---   param 2 is the Struct of class
---- @return std.Class
+--- @return class.Class
 local function new_class(_, ...)
-    --- @class std.Class : std.Object
+    --- @class class.Class : class.Object
     local Class = {}
 
     local _module = module.name(3)

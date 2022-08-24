@@ -12,7 +12,7 @@ local name = 'trait.collection'
 --- @class trait.collection
 local col = trait(name)
 
---- @param class std.Class
+--- @param class class.Class
 --- @return boolean
 function col:suitable(class)
     raise('to be implemented')

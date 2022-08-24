@@ -11,8 +11,8 @@ local raise = require 'exception.raise'
 local impl = mixer 'mixin.impl'
 
 --- mixin traits to class
---- @param class std.Class
---- @return std.Class
+--- @param class class.Class
+--- @return class.Class
 function impl:apply(class)
     local meta = getmetatable(class)
     -- TODO 支持多个 __index ?

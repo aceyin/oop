@@ -25,7 +25,7 @@ function regex:new(pattern)
     }
 end
 
---- @param object std.Object
+--- @param object class.Object
 --- @return boolean, std.error.Message
 function regex:verify(object)
     local k = type(object)

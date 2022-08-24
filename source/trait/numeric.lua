@@ -37,7 +37,7 @@ function number:value() return self.val end
 
 --- create a new integer type object instance.
 --- @param val number value
---- @return std.Object
+--- @return class.Object
 function number:new(val)
     if val == nil then raise('"%s" is not a valid number', val) end
     local min, max = self:min(), self:max()
@@ -52,7 +52,7 @@ end
 
 --- parse a string into a `integer` value.
 --- @param s string
---- @return std.primary.integer
+--- @return std.primary.numeric
 function number:from(s)
     local val = tonumber(s)
     return self:new(val)

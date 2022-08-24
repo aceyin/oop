@@ -7,7 +7,7 @@ local trait = require 'trait.trait'
 
 local walkable = trait 'traits.walkable'
 
---- @param class oop.Class | oop.class.Instance
+--- @param class class.Class | class.Instance
 --- @return boolean
 function walkable.suitable(class)
     local struct = class:struct()

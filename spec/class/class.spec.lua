@@ -4,14 +4,14 @@ local impl = require 'mixin.impl'
 local module = require 'std.module'
 local registry = require 'class.registry'
 
-describe('#oop.class.tests', function()
-    --- @class AnimalStruct : oop.Object
+describe('#class.tests', function()
+    --- @class AnimalStruct : class.Object
     local struct = {
         family = string,
         name = string,
     }
 
-    --- @class Animal: oop.Class
+    --- @class Animal: class.Class
     local animal
 
     test('new.simple.class', function()
@@ -52,7 +52,7 @@ describe('#oop.class.tests', function()
             }
         end
 
-        --- @type oop.class.Instance
+        --- @type class.Instance
         local lemon = plant('tree', 'lemon')
         assert.is_true(module.is_object(lemon))
         assert.is_equal('plants', lemon:classname())

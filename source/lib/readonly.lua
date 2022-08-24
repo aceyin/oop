@@ -6,7 +6,7 @@
 
 local readonly = {}
 
---- @param object std.Object
+--- @param object class.Object
 --- @return table
 local function make_readonly(object)
     assert(type(object) == 'table', 'param 1 must be a table.')

@@ -10,7 +10,7 @@ local raise = require 'exception.raise'
 --- @class trait.buffer
 local buf = trait 'trait.buffer'
 
---- @param class std.Class
+--- @param class class.Class
 --- @return boolean
 function buf:suitable(class)
     raise('to be implemented')
