@@ -7,13 +7,23 @@ local mode = require 'class.mode'
 local module = require 'std.module'
 local raise = require 'exception.raise'
 
+-- 每个 class 都有一个字段用来保存该 class 的元信息
+-- 用于提供给框架用来进行进一步使用
 local CLASS_INFO = '$CLASS-INFO'
 
 local fields = {
+    -- 类名(一般为 Lua 模块名)
     name = '$NAME',
+    -- 类的分类(允许多个同类型的 class 属于统一分类)
+    -- 如 数据类型的 class 都属于 std.primary
+    category = '$CATEGORY',
+    -- 类所在 Lua 模块名(完整包名)
     module = '$MODULE',
+    -- 类的模式(strict)
     mode = '$CLASS-MODE',
+    -- 类的结构体
     prototype = '$PROTOTYPE',
+    -- 当前类型实现的 trait
     traits = '$TRAITS',
 }
 

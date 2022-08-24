@@ -12,11 +12,11 @@ local rule = trait 'trait.rule'
 --- @param class std.Class
 --- @return boolean
 function rule:suitable(class)
-    raise('to be implemented')
+    return true
 end
 
 --- @param object std.Object
 --- @return boolean,std.error.Message
 function rule:verify(object)
-    raise('to be implemented')
+    raise('rule %s should overwrite "verify" method', object:classname())
 end
