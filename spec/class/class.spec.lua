@@ -5,7 +5,7 @@ local module = require 'std.module'
 local registry = require 'class.registry'
 
 describe('#oop.class.tests', function()
-    --- @class AnimalPrototype : oop.Object
+    --- @class AnimalStruct : oop.Object
     local struct = {
         family = string,
         name = string,
@@ -18,7 +18,7 @@ describe('#oop.class.tests', function()
         animal = class('animal', struct)
 
         assert.is_equal('animal', animal:classname())
-        assert.is_same(struct, animal:prototype())
+        assert.is_same(struct, animal:struct())
 
         assert.is_equal('$std.type.class', module.get_type(animal))
         assert.is_true(module.is_class(animal))
@@ -34,7 +34,7 @@ describe('#oop.class.tests', function()
     end)
 
     test('new.simple.object', function()
-        --- @class Dog : AnimalPrototype
+        --- @class Dog : AnimalStruct
         local dog = animal { name = 'dog', family = 'dog-family' }
         assert.is_true(module.is_object(dog))
         assert.is_equal('dog', dog.name)
@@ -78,7 +78,7 @@ describe('#oop.class.tests', function()
         registry.remove(bird)
     end)
 
-    test('define.func.in.prototype', function()
+    test('define.func.in.struct', function()
         local pro = {
             family = string,
             hello = function(self, msg)

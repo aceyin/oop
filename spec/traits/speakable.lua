@@ -13,8 +13,8 @@ local speakable = trait(name)
 --- @param c oop.Class | oop.class.Instance
 --- @return boolean
 function speakable.suitable(c)
-    local prototype = c:prototype()
-    return prototype.name ~= nil
+    local struct = c:struct()
+    return struct.name ~= nil
 end
 
 function speakable:talk()

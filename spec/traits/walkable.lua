@@ -10,8 +10,8 @@ local walkable = trait 'traits.walkable'
 --- @param class oop.Class | oop.class.Instance
 --- @return boolean
 function walkable.suitable(class)
-    local prototype = class:prototype()
-    return prototype.name ~= nil
+    local struct = class:struct()
+    return struct.name ~= nil
 end
 
 function walkable:walk()

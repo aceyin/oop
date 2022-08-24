@@ -22,13 +22,13 @@ local fields = {
     -- 类的模式(strict)
     mode = '$CLASS-MODE',
     -- 类的结构体
-    prototype = '$PROTOTYPE',
+    struct = '$STRUCT',
     -- 当前类型实现的 trait
     traits = '$TRAITS',
 }
 
---- extract class mode settings from prototype.
---- @param proto class.Prototype
+--- extract class mode settings from struct.
+--- @param proto class.Struct
 --- @return table<string, boolean>
 local function extract_class_mode(proto)
     local _mode = {}
@@ -38,7 +38,7 @@ local function extract_class_mode(proto)
         if type(key) ~= 'number' then goto CONTINUE end
 
         assert(type(option) == 'table',
-               ('prototype option value must be a table, option index:%s'):format(key))
+               ('struct option value must be a table, option index:%s'):format(key))
 
         for mk, mv in pairs(mode) do
             for n, v in pairs(option) do
@@ -62,7 +62,7 @@ end
 --- @param class std.Class
 --- @param mod string Lua module name this class defined
 --- @param name string class name
---- @param proto class.Prototype class prototype
+--- @param proto class.Struct class struct
 --- @param overwrite boolean
 --- @return void
 local function init_meta(class, mod, name, proto, overwrite)
@@ -73,12 +73,12 @@ local function init_meta(class, mod, name, proto, overwrite)
     local meta = class[CLASS_INFO]
     if meta and not overwrite then return end
 
-    -- get class mode from prototype
+    -- get class mode from struct
     local class_mode = extract_class_mode(proto)
     class[CLASS_INFO] = {
         [fields.name] = name,
         [fields.module] = mod,
-        [fields.prototype] = proto,
+        [fields.struct] = proto,
         [fields.mode] = class_mode,
         [fields.traits] = {}
     }
@@ -99,13 +99,13 @@ end
 
 --- get a struct of a class
 --- @param class std.Class
---- @return class.Prototype
-local function get_prototype(class)
+--- @return class.Struct
+local function get_struct(class)
     assert(module.is_class(class) or module.is_object(class),
            'param 1 must be a class or an object.')
     local meta = class[CLASS_INFO]
     if not meta then return nil end
-    return meta[fields.prototype]
+    return meta[fields.struct]
 end
 
 --- get the Lua module where this `class` defined.
@@ -181,7 +181,7 @@ end
 return {
     init = init_meta,
     classname = get_name,
-    prototype = get_prototype,
+    struct = get_struct,
     module = get_module,
     is_strict = is_strict,
     is_singleton = is_singleton,

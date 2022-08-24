@@ -9,18 +9,18 @@ local registry = require 'class.registry'
 
 --- @alias std.Object table
 
---- @alias class.Prototype table<string, class.PrototypeField>
+--- @alias class.Struct table<string, class.StructField>
 --- @alias class.Mode string
 --- @alias class.Constructor fun(c:std.Class, ...:any):class.Instance
 
---- @class class.PrototypeField
+--- @class class.StructField
 --- @field type std.Type
 --- @field option
 --- @field constraint
 
 --- @class class.Instance
 --- @field classname fun(o:class.Instance):string
---- @field prototype fun(o:class.Instance):class.Prototype
+--- @field struct fun(o:class.Instance):class.Struct
 --- @field instanceof fun(o:class.Instance, c:std.Class):boolean
 
 local invalid_construct_args = 'argument type invalid:%s. default constructor argument type must be table.'
@@ -41,7 +41,7 @@ local function default_constructor(class, values)
 
     -- TODO support singleton
     local is_strict = meta.is_strict(class)
-    local proto = class:prototype()
+    local proto = class:struct()
     local name = class:classname()
 
     for field, val in pairs(values) do
@@ -81,7 +81,7 @@ local function new_instance(class, ...)
 
     local mod = module.name(3)
     module.init(object, module.types.object)
-    meta.init(object, mod, class:classname(), class:prototype())
+    meta.init(object, mod, class:classname(), class:struct())
 
     --- check if this object is an instance of `class`.
     --- @param c std.Class
@@ -98,7 +98,7 @@ local invalid_class_args = 'argument type invalid: string or table expected, but
 
 --- get class name and proto from arguments.
 --- @param mod string Lua module name define class.
---- @vararg string|table class name and class prototype
+--- @vararg string|table class name and class struct
 --- @return string, table
 local function extract(mod, ...)
     local argn = select('#', ...)
@@ -121,11 +121,11 @@ local function extract(mod, ...)
     return name, proto
 end
 
---- create a new class object with the given argument as the prototype
---- @overload fun(c:std.Class, name:string, proto:class.Prototype):std.Class
+--- create a new class object with the given argument as the struct
+--- @overload fun(c:std.Class, name:string, proto:class.Struct):std.Class
 --- @vararg any
 ---   param 1 is the name of class, optional
----   param 2 is the prototype of class
+---   param 2 is the Struct of class
 --- @return std.Class
 local function new_class(_, ...)
     --- @class std.Class : std.Object
@@ -143,9 +143,9 @@ local function new_class(_, ...)
     end
 
     --- get struct of this class.
-    --- @return class.Prototype
-    function Class:prototype()
-        return meta.prototype(self)
+    --- @return class.Struct
+    function Class:struct()
+        return meta.struct(self)
     end
 
     --- get the Lua module where this `Class` defined.
