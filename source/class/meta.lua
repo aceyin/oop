@@ -3,7 +3,7 @@
 ---
 --- @alias std.meta.Type string
 
-local mode = require 'class.mode'
+local mode = require 'class.option'
 local module = require 'std.module'
 local raise = require 'exception.raise'
 

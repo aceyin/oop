@@ -1,4 +1,4 @@
-local mode = require 'class.mode'
+local option = require 'class.option'
 local class = require 'class.class'
 local impl = require 'mixin.impl'
 local module = require 'std.module'
@@ -65,7 +65,7 @@ describe('#class.tests', function()
     test('strict.class.mode', function()
         local pro = {
             family = string,
-            { mode.strict, singleton = true },
+            { option.strict },
         }
         local bird = class('bird', pro)
 

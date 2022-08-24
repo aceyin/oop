@@ -1,7 +1,7 @@
 ---
 --- a Prototype based Class System.
 ---
-local mode = require 'class.mode'
+local mode = require 'class.option'
 local meta = require 'class.meta'
 local module = require 'std.module'
 local raise = require 'exception.raise'
