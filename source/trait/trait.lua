@@ -3,7 +3,7 @@
 ---
 
 local module = require 'lib.module'
-local raise = require 'exception.raise'
+local raise = require 'error.raise'
 
 --- @class trait.Trait
 --- @field name string trait name

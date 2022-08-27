@@ -7,7 +7,7 @@
 local rule = require 'trait.rule'
 local impl = require 'mixin.impl'
 local class = require 'class.class'
-local raise = require 'exception.raise'
+local raise = require 'error.raise'
 
 local name = 'verify.rule.regex'
 local struct = {

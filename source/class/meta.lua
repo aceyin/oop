@@ -5,7 +5,7 @@
 
 local mode = require 'class.attr'
 local module = require 'lib.module'
-local raise = require 'exception.raise'
+local raise = require 'error.raise'
 
 -- 每个 class 都有一个字段用来保存该 class 的元信息
 -- 用于提供给框架用来进行进一步使用

@@ -9,8 +9,7 @@
 --- @field apply fun(self:mixin.Mixer, class:class.Class):class.Class
 
 local module = require 'lib.module'
-local todo = require 'exception.todo'
-local raise = require 'exception.raise'
+local raise = require 'error.raise'
 
 local MIXER_INFO = '$MIXER-INFO'
 
@@ -84,7 +83,7 @@ local function new_mixer(_, name)
     --- @param class class.Class
     --- @return class.Class
     function mixer:apply(m, class)
-        todo()
+        raise(('mixer %s must implement "apply()" method.'):format(name))
     end
 
     return setmetatable(mixer, { __call = new_instance })

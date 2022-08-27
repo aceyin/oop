@@ -4,7 +4,7 @@
 ---
 
 local trait = require 'trait.trait'
-local raise = require 'exception.raise'
+local raise = require 'error.raise'
 
 --- @class trait.rule
 local rule = trait 'trait.rule'

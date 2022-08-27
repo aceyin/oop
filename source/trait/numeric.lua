@@ -7,7 +7,7 @@
 --- @class std.primary.numeric : trait.numeric
 --- @field val number
 
-local raise = require 'exception.raise'
+local raise = require 'error.raise'
 local trait = require 'trait.trait'
 
 --- @class trait.number

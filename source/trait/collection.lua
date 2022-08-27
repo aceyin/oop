@@ -5,7 +5,7 @@
 ---
 
 local trait = require 'trait.trait'
-local raise = require 'exception.raise'
+local raise = require 'error.raise'
 
 local name = 'trait.collection'
 

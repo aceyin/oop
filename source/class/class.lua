@@ -4,7 +4,7 @@
 local meta = require 'class.meta'
 local module = require 'lib.module'
 local option = require 'class.attr'
-local raise = require 'exception.raise'
+local raise = require 'error.raise'
 local registry = require 'class.registry'
 
 --- @alias class.Object table

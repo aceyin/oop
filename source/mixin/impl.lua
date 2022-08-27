@@ -6,7 +6,7 @@
 --- @field traits table<string, function>
 
 local mixer = require 'mixin.mixer'
-local raise = require 'exception.raise'
+local raise = require 'error.raise'
 
 local impl = mixer 'mixin.impl'
 
