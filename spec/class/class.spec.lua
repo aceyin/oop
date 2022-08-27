@@ -1,7 +1,7 @@
 local option = require 'class.attr'
 local class = require 'class.class'
 local impl = require 'mixin.impl'
-local module = require 'std.module'
+local module = require 'types.module'
 local registry = require 'class.registry'
 
 describe('#class.tests', function()

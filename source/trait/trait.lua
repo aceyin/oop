@@ -2,7 +2,7 @@
 --- traits util module.
 ---
 
-local module = require 'std.module'
+local module = require 'types.module'
 local raise = require 'exception.raise'
 
 --- @class trait.Trait

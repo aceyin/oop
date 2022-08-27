@@ -2,7 +2,7 @@
 --- a Prototype based Class System.
 ---
 local meta = require 'class.meta'
-local module = require 'std.module'
+local module = require 'types.module'
 local option = require 'class.attr'
 local raise = require 'exception.raise'
 local registry = require 'class.registry'

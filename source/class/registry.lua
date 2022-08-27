@@ -4,7 +4,7 @@
 --- DateTime: 2022/8/14 18:55
 ---
 
-local module = require 'std.module'
+local module = require 'types.module'
 
 local REGISTRY_KEY = 'class.Class.local.registry'
 

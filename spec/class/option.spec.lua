@@ -6,9 +6,9 @@
 local option = require 'class.attr'
 local class = require 'class.class'
 local impl = require 'mixin.impl'
-local module = require 'std.module'
+local module = require 'types.module'
 local registry = require 'class.registry'
-local int64 = require 'std.primary.int64'
+local int64 = require 'types.primary.int64'
 
 describe('#class.option.tests', function()
 

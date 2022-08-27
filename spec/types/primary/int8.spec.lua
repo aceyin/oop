@@ -3,7 +3,7 @@
 --- DateTime: 2022/8/20 17:38
 ---
 
-local int8 = require 'std.primary.int8'
+local int8 = require 'types.primary.int8'
 
 describe('#std.primary.int8.tests', function()
 

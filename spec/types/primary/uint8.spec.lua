@@ -3,7 +3,7 @@
 --- DateTime: 2022/8/20 17:38
 ---
 
-local uint8 = require 'std.primary.uint8'
+local uint8 = require 'types.primary.uint8'
 
 describe('#std.primary.uint8.tests', function()
 

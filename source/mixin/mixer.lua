@@ -8,7 +8,7 @@
 --- @field traits table<string, trait.Trait>
 --- @field apply fun(self:mixin.Mixer, class:class.Class):class.Class
 
-local module = require 'std.module'
+local module = require 'types.module'
 local todo = require 'exception.todo'
 local raise = require 'exception.raise'
 
