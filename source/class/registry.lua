@@ -3,8 +3,8 @@
 --- Created by ace.
 --- DateTime: 2022/8/14 18:55
 ---
-
 local module = require 'lib.module'
+local raise = require 'error.raise'
 
 local REGISTRY_KEY = 'class.Class.local.registry'
 
@@ -44,8 +44,9 @@ local function register_class(class)
     local mod = class:module()
     local old_mod = old:module()
 
-    assert(old_mod == mod, ('Duplicated class definition found in module "%s" and "%s", classname:%s.')
-            :format(mod, old_mod, classname))
+    if old_mod ~= mod then
+        raise('duplicated class found "%s" in module "%s" and "%s"', classname, mod, old_mod)
+    end
 
     registry[classname] = class
     return true
