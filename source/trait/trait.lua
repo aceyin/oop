@@ -88,5 +88,4 @@ local function new_trait(_, name)
 end
 
 local factory = {}
-
 return setmetatable(factory, { __call = new_trait })
