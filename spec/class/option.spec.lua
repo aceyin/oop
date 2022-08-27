@@ -8,7 +8,7 @@ local class = require 'class.class'
 local impl = require 'mixin.impl'
 local module = require 'lib.module'
 local registry = require 'class.registry'
-local int64 = require 'types.primary.int64'
+local int64 = require 'primary.int64'
 
 describe('#class.option.tests', function()
 
