@@ -1,9 +1,9 @@
 ---
 --- a Prototype based Class System.
 ---
-local mode = require 'class.option'
 local meta = require 'class.meta'
 local module = require 'std.module'
+local option = require 'class.option'
 local raise = require 'exception.raise'
 local registry = require 'class.registry'
 
@@ -35,27 +35,23 @@ local function default_constructor(class, values)
     --- @type class.Instance
     local object = {}
     if not values then return object end
-
     local k = type(values)
     assert(k == 'table', invalid_construct_args:format(k))
 
-    -- TODO support singleton
-    local is_strict = meta.is_strict(class)
-    local proto = class:struct()
     local name = class:classname()
-
     for field, val in pairs(values) do
-        -- TODO validate val
-        -- TODO add default value support
-
         local kind = type(field)
         assert(kind == 'string', invalid_field_name_type:format(name, kind))
-        if is_strict and not proto[field] then
-            error(undefined_field:format(name, field))
-        end
         object[field] = val
     end
     return object
+end
+
+--- 检查对象是否与 class 的选项设定符合
+--- @param object class.Object
+--- @return boolean, std.error.Message
+local function check_options(object)
+
 end
 
 --- mixin mixers for this `class`.
@@ -78,6 +74,9 @@ local function new_instance(class, ...)
     constructor = constructor or default_constructor
     --- @type class.Instance
     local object = constructor(class, ...)
+
+    local ok, message = option.check(object, class)
+    if not ok then raise(message) end
 
     local mod = module.name(3)
     module.init(object, module.types.object)
@@ -180,7 +179,7 @@ local function new_class(_, ...)
 end
 
 local factory = {
-    mode = mode
+    -- class option
+    option = option
 }
-
 return setmetatable(factory, { __call = new_class })

@@ -4,7 +4,7 @@
 
   - class static field
   - field data type
-  - verify support
+  - validate support
   - implement `std.collection`
   - implement `std.string_buffer`
   - hot-reload support
