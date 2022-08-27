@@ -1,4 +1,4 @@
-local option = require 'class.option'
+local option = require 'class.attr'
 local class = require 'class.class'
 local impl = require 'mixin.impl'
 local module = require 'std.module'

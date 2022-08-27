@@ -3,7 +3,7 @@
 ---
 local meta = require 'class.meta'
 local module = require 'std.module'
-local option = require 'class.option'
+local option = require 'class.attr'
 local raise = require 'exception.raise'
 local registry = require 'class.registry'
 
