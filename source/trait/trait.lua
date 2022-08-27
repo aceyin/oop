@@ -2,7 +2,7 @@
 --- traits util module.
 ---
 
-local module = require 'types.module'
+local module = require 'lib.module'
 local raise = require 'exception.raise'
 
 --- @class trait.Trait

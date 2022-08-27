@@ -4,7 +4,7 @@
 --- @alias std.meta.Type string
 
 local mode = require 'class.attr'
-local module = require 'types.module'
+local module = require 'lib.module'
 local raise = require 'exception.raise'
 
 -- 每个 class 都有一个字段用来保存该 class 的元信息

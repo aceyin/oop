@@ -4,7 +4,7 @@
 --- DateTime: 2022/8/15 08:08
 ---
 
-local module = require 'types.module'
+local module = require 'lib.module'
 
 local strict_checker_title = '"strict" mode checker:'
 local undefined_field = '%s[%s] undefined field for class "%s"'
